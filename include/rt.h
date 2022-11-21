@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:22:31 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/21 19:50:15 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/21 20:33:30 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
+typedef float t_coord __attribute__((ext_vector_type(3)));
+
 typedef struct s_pos
 {
 	struct s_list	*start;
@@ -41,16 +43,11 @@ typedef struct s_list
 	struct s_pos	*pos;
 }	t_list;
 
-typedef struct s_coord
-{
-	int	x;
-	int	y;
-}	t_coord;
-
 typedef struct s_ori
 {
-	int	x;
-	int	y;
+	float	x;
+	float	y;
+	float	z;
 }	t_ori;
 
 typedef struct s_cam
@@ -63,7 +60,7 @@ typedef struct s_sp
 {
 	int	color;
 	t_coord	*coord;
-	int	rayon;
+	float	rayon;
 }	t_sp;
 
 typedef struct s_pl
@@ -108,10 +105,12 @@ typedef struct s_obj
 {
 	int		type;
 	void	*obj;
-	int		xmin;
-	int		ymin;
-	int		xmax;
-	int		ymax;
+	float		xmin;
+	float		ymin;
+	float		xmax;
+	float		ymax;
+	float		zmin;
+	float		zmax;
 }	t_obj;
 
 typedef struct s_imginfo
@@ -131,10 +130,12 @@ typedef struct s_rt
 	void		*mlx_ptr;
 	int			xsize;
 	int			ysize;
-	int			objxmin;
-	int			objymin;
-	int			objxmax;
-	int			objymax;
+	float		objxmin;
+	float		objymin;
+	float		objzmin;
+	float		objzmax;
+	float		objxmax;
+	float		objymax;
 	int			*color;
 	t_obj		*cam;
 	t_pos		*obj;
@@ -170,9 +171,9 @@ void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two, int color);
 /*utils*/
 
 void	ft_swapcoord(t_coord *a, t_coord *b);
-void	ft_swap(int *a, int *b);
+void	ft_swap(float *a, float *b);
 void	ft_printpixelimg(t_rt *rt, t_coord *print, int color);
-t_coord	*ft_makecoord(t_rt *rt, int x, int y);
+t_coord	*ft_makecoord(t_rt *rt, float x, float y, float z);
 
 /*Sphere*/
 

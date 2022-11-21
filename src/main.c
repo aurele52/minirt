@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 21:07:03 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/21 19:46:36 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/21 20:59:40 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ void	ft_printvoxel(t_rt *rt, t_voxel *voxel)
 	t_coord	third;
 	t_coord	fourth;
 
-	third = *ft_makecoord(rt, voxel->first->x, voxel->second->y);
-	fourth = *ft_makecoord(rt, voxel->second->x, voxel->first->y);
+	third = *ft_makecoord(rt, voxel->first->x, voxel->second->y, 0);
+	fourth = *ft_makecoord(rt, voxel->second->x, voxel->first->y, 0);
 	ft_printdroite(rt, *voxel->first, third, voxel->color);
 	ft_printdroite(rt, third, *voxel->second, voxel->color);
 	ft_printdroite(rt, *voxel->second, fourth, voxel->color);
@@ -62,11 +62,11 @@ void	ft_printpl(t_rt *rt, t_pl *pl)
 	t_coord	*first;
 	t_coord	*second;
 
-	first = ft_makecoord(rt, pl->coord->x + rt->xsize * pl->ori->x, pl->coord->y + rt->ysize * pl->ori->y);
-	second = ft_makecoord(rt, pl->coord->x + -(rt->xsize * pl->ori->x), pl->coord->y + -(rt->ysize * pl->ori->y));
+	first = ft_makecoord(rt, pl->coord->x + rt->xsize * pl->ori->x, pl->coord->y + rt->ysize * pl->ori->y, 0);
+	second = ft_makecoord(rt, pl->coord->x + -(rt->xsize * pl->ori->x), pl->coord->y + -(rt->ysize * pl->ori->y), 0);
 	ft_printdroite(rt, *second, *first, pl->color);
 	pl->color = pl->color + 10000;
-	first = ft_makecoord(rt, pl->coord->x + 10 * pl->ori->y, pl->coord->y + 10 * pl->ori->x);
+	first = ft_makecoord(rt, pl->coord->x + 10 * pl->ori->y, pl->coord->y + 10 * pl->ori->x, 0);
 	ft_printdroite(rt, *pl->coord, *first, pl->color);
 }
 
@@ -81,12 +81,12 @@ void	ft_printcam(t_rt *rt, t_cam *cam)
 	y = cam->coord->y;
 	x2 = cam->coord->x - 10;
 	y2 = cam->coord->y;
-	ft_printdroite(rt, *ft_makecoord(rt, x2, y2), *ft_makecoord(rt, x, y), cam->color);
+	ft_printdroite(rt, *ft_makecoord(rt, x2, y2, 0), *ft_makecoord(rt, x, y, 0), cam->color);
 	x = cam->coord->x;
 	y = cam->coord->y + 10;
 	x2 = cam->coord->x;
 	y2 = cam->coord->y - 10;
-	ft_printdroite(rt, *ft_makecoord(rt, x2, y2), *ft_makecoord(rt, x, y), cam->color);
+	ft_printdroite(rt, *ft_makecoord(rt, x2, y2, 0), *ft_makecoord(rt, x, y, 0), cam->color);
 }
 
 t_voxel	*ft_makenewvoxel(t_rt *rt, t_coord *coord1, t_coord *coord2, int *color)
@@ -107,29 +107,21 @@ t_voxel *ft_makefirstvoxel(t_rt *rt)
 	t_coord	*coord1;
 	t_coord	*coord2;
 
-	coord1 = ft_makecoord(rt, rt->objxmax, rt->objymax);
-	coord2 = ft_makecoord(rt, rt->objxmin, rt->objymin);
+	coord1 = ft_makecoord(rt, rt->objxmax, rt->objymax, rt->objzmax);
+	coord2 = ft_makecoord(rt, rt->objxmin, rt->objymin, rt->objzmin);
 	return (ft_makenewvoxel(rt, coord1, coord2, rt->color));
 }
 
-t_coord	*ft_voxelsplit(t_rt *rt, t_voxel *voxel, int depth)
+t_coord	*ft_voxelsplit(t_rt *rt, t_voxel *voxel)
 {
 	int	x;
 	int	y;
+	int	z;
 
-	x = 0;
-	y = 0;
-	if (depth == 0)
-	{
-		x = (-voxel->second->x + voxel->first->x) / 2 + voxel->second->x;
-		y = (-voxel->second->y + voxel->first->y) / 2 + voxel->second->y;
-	}
-	if (depth == 1)
-	{
-		x = (-voxel->second->x + voxel->first->x) / 2 + voxel->second->x;
-		y = (-voxel->second->y + voxel->first->y) / 2 + voxel->second->y;
-	}
-	return (ft_makecoord(rt, x, y));
+	x = (-voxel->second->x + voxel->first->x) / 2 + voxel->second->x;
+	y = (-voxel->second->y + voxel->first->y) / 2 + voxel->second->y;
+	z = (-voxel->second->z + voxel->first->z) / 2 + voxel->second->z;
+	return (ft_makecoord(rt, x, y, z));
 }
 
 t_pl	*ft_findsplitvoxel(t_rt *rt, t_pos *obj, t_voxel *voxel, int depth)
@@ -142,14 +134,20 @@ t_pl	*ft_findsplitvoxel(t_rt *rt, t_pos *obj, t_voxel *voxel, int depth)
 		ft_exit(rt, "malloc error\n");
 	if (depth == 0)
 	{
-		pl->coord = ft_voxelsplit(rt, voxel, depth);
-		pl->ori = (t_ori *)ft_makecoord(rt, 0, 1);
+		pl->coord = ft_voxelsplit(rt, voxel);
+		pl->ori = (t_ori *)ft_makecoord(rt, 0, 1, 0);
 		pl->color = 77777;
 	}
 	if (depth == 1)
 	{
-		pl->coord = ft_voxelsplit(rt, voxel, depth);
-		pl->ori = (t_ori *)ft_makecoord(rt, 1, 0);
+		pl->coord = ft_voxelsplit(rt, voxel);
+		pl->ori = (t_ori *)ft_makecoord(rt, 1, 0, 0);
+		pl->color = 8888888;
+	}
+	if (depth == 2)
+	{
+		pl->coord = ft_voxelsplit(rt, voxel);
+		pl->ori = (t_ori *)ft_makecoord(rt, 0, 0, 1);
 		pl->color = 8888888;
 	}
 	return (pl);
@@ -190,13 +188,18 @@ t_voxel	*ft_splitvoxelgauche(t_rt *rt, t_voxel *voxel, t_pl *pl, int depth)
 
 	if (depth == 0)
 	{
-		coord1 = ft_makecoord(rt, voxel->first->x, voxel->first->y);
-		coord2 = ft_makecoord(rt, pl->coord->x, voxel->second->y);
+		coord1 = ft_makecoord(rt, voxel->first->x, voxel->first->y, voxel->first->z);
+		coord2 = ft_makecoord(rt, pl->coord->x, voxel->second->y, voxel->second->z);
 	}
 	if (depth == 1)
 	{
-		coord1 = ft_makecoord(rt, voxel->first->x, voxel->first->y);
-		coord2 = ft_makecoord(rt, voxel->second->x, pl->coord->y);
+		coord1 = ft_makecoord(rt, voxel->first->x, voxel->first->y, voxel->first->z);
+		coord2 = ft_makecoord(rt, voxel->second->x, pl->coord->y, voxel->second->z);
+	}
+	if (depth == 2)
+	{
+		coord1 = ft_makecoord(rt, voxel->first->x, voxel->first->y, voxel->first->z);
+		coord2 = ft_makecoord(rt, voxel->second->x, voxel->second->y, pl->coord->z);
 	}
 	return (ft_makenewvoxel(rt, coord1, coord2, rt->color));
 }
@@ -208,13 +211,18 @@ t_voxel	*ft_splitvoxeldroite(t_rt *rt, t_voxel *voxel, t_pl *pl, int depth)
 
 	if (depth == 0)
 	{
-		coord1 = ft_makecoord(rt, pl->coord->x, voxel->first->y);
-		coord2 = ft_makecoord(rt, voxel->second->x, voxel->second->y);
+		coord1 = ft_makecoord(rt, pl->coord->x, voxel->first->y, voxel->first->z);
+		coord2 = ft_makecoord(rt, voxel->second->x, voxel->second->y, voxel->second->z);
 	}
 	if (depth == 1)
 	{
-		coord1 = ft_makecoord(rt, voxel->first->x, pl->coord->y);
-		coord2 = ft_makecoord(rt, voxel->second->x, voxel->second->y);
+		coord1 = ft_makecoord(rt, voxel->first->x, pl->coord->y, voxel->first->z);
+		coord2 = ft_makecoord(rt, voxel->second->x, voxel->second->y, voxel->second->z);
+	}
+	if (depth == 2)
+	{
+		coord1 = ft_makecoord(rt, voxel->first->x, voxel->first->y, pl->coord->z);
+		coord2 = ft_makecoord(rt, voxel->second->x, voxel->second->y, voxel->second->z);
 	}
 	return (ft_makenewvoxel(rt, coord1, coord2, rt->color));
 }
@@ -254,6 +262,12 @@ t_pos	*ft_objdroite(t_rt *rt, t_pl *pl, t_pos *obj, int depth)
 			mem = mem->next;
 			ft_lstnew(mem->back->content ,new, rt->garbage);
 		}
+		else if (((t_obj *)mem->content)->zmin < pl->coord->z && depth == 2)
+		{
+			ft_coloradd((t_obj *)mem->content, 777777);
+			mem = mem->next;
+			ft_lstnew(mem->back->content ,new, rt->garbage);
+		}
 		else
 			mem = mem->next;
 	}
@@ -282,6 +296,12 @@ t_pos	*ft_objgauche(t_rt *rt, t_pl *pl, t_pos *obj, int depth)
 			ft_lstnew(mem->back->content ,new, rt->garbage);
 		}
 		else if (((t_obj *)mem->content)->ymax > pl->coord->y && depth == 1)
+		{
+			ft_coloradd((t_obj *)mem->content, 799999);
+			mem = mem->next;
+			ft_lstnew(mem->back->content ,new, rt->garbage);
+		}
+		else if (((t_obj *)mem->content)->zmax > pl->coord->z && depth == 2)
 		{
 			ft_coloradd((t_obj *)mem->content, 799999);
 			mem = mem->next;
@@ -316,6 +336,12 @@ void	ft_clearobjlist(t_pl *pl, t_pos *obj, int depth)
 			mem = mem->next;
 			ft_lstdelone(mem->back ,0);
 		}
+		else if ((((t_obj *)mem->content)->zmax != pl->coord->z || ((t_obj *)mem->content)->zmin != pl->coord->z) && depth == 2)
+		{
+			lol--;
+			mem = mem->next;
+			ft_lstdelone(mem->back ,0);
+		}
 		else
 			mem = mem->next;
 	}
@@ -342,7 +368,7 @@ t_pos	*ft_lstdup(t_pos *pos, t_pos *garbage)
 int	ft_calcfin(t_pos *obj, t_voxel *voxel, int depth)
 {
 	(void)voxel;
-	if (*obj->size <= 1 || depth >= 20)
+	if (*obj->size <= 1 || depth >= 10)
 		return (1);
 	return (0);
 }
@@ -379,19 +405,19 @@ void	ft_printpl2(t_rt *rt, t_pl *pl, t_voxel *voxel)
 	t_coord	*first;
 	t_coord	*second;
 
-	first = ft_makecoord(rt, pl->coord->x + rt->xsize * pl->ori->x, pl->coord->y + rt->ysize * pl->ori->y);
+	first = ft_makecoord(rt, pl->coord->x + rt->xsize * pl->ori->x, pl->coord->y + rt->ysize * pl->ori->y, 0);
 	if (first->x > voxel->first->x)
 		first->x = voxel->first->x;
 	if (first->y > voxel->first->y)
 		first->y = voxel->first->y;
-	second = ft_makecoord(rt, pl->coord->x + -(rt->xsize * pl->ori->x), pl->coord->y + -(rt->ysize * pl->ori->y));
+	second = ft_makecoord(rt, pl->coord->x + -(rt->xsize * pl->ori->x), pl->coord->y + -(rt->ysize * pl->ori->y), 0);
 	if (second->x < voxel->second->x)
 		second->x = voxel->second->x;
 	if (second->y < voxel->second->y)
 		second->y = voxel->second->y;
 	ft_printdroite(rt, *second, *first, pl->color);
 	pl->color = pl->color + 10000;
-	first = ft_makecoord(rt, pl->coord->x + 10 * pl->ori->y, pl->coord->y + 10 * pl->ori->x);
+	first = ft_makecoord(rt, pl->coord->x + 10 * pl->ori->y, pl->coord->y + 10 * pl->ori->x, 0);
 	ft_printdroite(rt, *pl->coord, *first, pl->color);
 }
 
@@ -405,14 +431,15 @@ t_bt	*ft_voxeluconstruct(t_rt *rt, t_pos *obj, t_voxel *voxel, int depth)
 
 	if (ft_calcfin(obj, voxel, depth))
 		return (ft_newleaf(rt, obj));
-	plan = ft_findsplitvoxel(rt, obj, voxel, depth % 2);
+	plan = ft_findsplitvoxel(rt, obj, voxel, depth % 3);
+	if (depth % 3 != 2)
 	ft_printpl2(rt, plan, voxel);
 	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr, rt->image.origin, 0, 0);
-	voxeldroite = ft_splitvoxeldroite(rt, voxel, plan, depth % 2);
-	voxelgauche = ft_splitvoxelgauche(rt, voxel, plan, depth % 2);
-	listevoxeldroite = ft_objdroite(rt, plan, obj, depth % 2);
-	listevoxelgauche = ft_objgauche(rt, plan, obj, depth % 2);
-	ft_clearobjlist(plan, obj, depth % 2);
+	voxeldroite = ft_splitvoxeldroite(rt, voxel, plan, depth % 3);
+	voxelgauche = ft_splitvoxelgauche(rt, voxel, plan, depth % 3);
+	listevoxeldroite = ft_objdroite(rt, plan, obj, depth % 3);
+	listevoxelgauche = ft_objgauche(rt, plan, obj, depth % 3);
+	ft_clearobjlist(plan, obj, depth % 3);
 	ft_printobjlist(rt, rt->obj);
 	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr, rt->image.origin, 0, 0);
 	return (ft_newnoeu(rt, obj, ft_voxeluconstruct(rt, listevoxeldroite, voxeldroite, depth + 1), ft_voxeluconstruct(rt, listevoxelgauche, voxelgauche, depth + 1)));
@@ -512,6 +539,11 @@ t_coord	*ft_atoicoord(t_rt *rt, char *str)
 	if (str[i] == ',')
 		i++;
 	coord->y = ft_atoi(&str[i]);
+	while (str[i] && str[i] != ',')
+		i++;
+	if (str[i] == ',')
+		i++;
+	coord->z = ft_atoi(&str[i]);
 	return (coord);
 }
 
@@ -530,6 +562,11 @@ t_ori	*ft_atoiori(t_rt *rt, char *str)
 	if (str[i] == ',')
 		i++;
 	ori->y = ft_atoi(&str[i]);
+	while (str[i] && str[i] != ',')
+		i++;
+	if (str[i] == ',')
+		i++;
+	ori->z = ft_atoi(&str[i]);
 	return (ori);
 }
 
@@ -542,6 +579,8 @@ void	ft_calcsp(t_obj *objet)
 	objet->xmax = sp->coord->x + sp->rayon;
 	objet->ymin = sp->coord->y - sp->rayon;
 	objet->ymax = sp->coord->y + sp->rayon;
+	objet->zmin = sp->coord->z - sp->rayon;
+	objet->zmax = sp->coord->z + sp->rayon;
 }
 
 void	ft_calcpl(t_obj *objet)
@@ -569,6 +608,16 @@ void	ft_calcpl(t_obj *objet)
 		objet->ymin = -2000000000;
 		objet->ymax = 2000000000;
 	}
+	if (pl->ori->z == 0)
+	{
+		objet->zmin = pl->coord->z;
+		objet->zmax = pl->coord->z;
+	}
+	else
+	{
+		objet->ymin = -2000000000;
+		objet->ymax = 2000000000;
+	}
 }
 
 void	ft_calcvoxel(t_obj *objet)
@@ -580,6 +629,8 @@ void	ft_calcvoxel(t_obj *objet)
 	objet->ymin = ft_min(voxel->first->y, voxel->second->y);
 	objet->xmax = ft_max(voxel->first->x, voxel->second->x);
 	objet->ymax = ft_max(voxel->first->y, voxel->second->y);
+	objet->zmin = ft_min(voxel->first->z, voxel->second->z);
+	objet->zmax = ft_max(voxel->first->z, voxel->second->z);
 }
 
 void	ft_calcC(t_obj *objet)
@@ -591,6 +642,8 @@ void	ft_calcC(t_obj *objet)
 	objet->ymin = cam->coord->y;
 	objet->xmax = cam->coord->x;
 	objet->ymax = cam->coord->y;
+	objet->zmin = cam->coord->z;
+	objet->zmax = cam->coord->z;
 }
 
 void	ft_calccoordobjrt(t_rt *rt, t_obj *obj)
@@ -603,6 +656,10 @@ void	ft_calccoordobjrt(t_rt *rt, t_obj *obj)
 		rt->objymax = obj->ymax;
 	if (obj->xmax > rt->objxmax)
 		rt->objxmax = obj->xmax;
+	if (obj->zmin < rt->objzmin)
+		rt->objzmin = obj->zmin;
+	if (obj->zmax > rt->objzmax)
+		rt->objzmax = obj->zmax;
 }
 
 void	ft_recalc(t_rt *rt)
@@ -614,6 +671,8 @@ void	ft_recalc(t_rt *rt)
 	rt->objxmax = -200000000;
 	rt->objymin = 200000000;
 	rt->objymax = -200000000;
+	rt->objzmin = 200000000;
+	rt->objzmax = -200000000;
 	mem = 0;
 	liste = rt->obj->start;
 	while (liste != rt->obj->start || mem++ == 0)
@@ -645,6 +704,8 @@ void	ft_moveonecoord(void *obj, t_coord *coord)
 		sp->coord->x = sp->coord->x + coord->x;
 	if (coord->y != 0)
 		sp->coord->y = sp->coord->y + coord->y;
+	if (coord->z != 0)
+		sp->coord->z = sp->coord->z + coord->z;
 }
 
 int		ft_isonecoordex(t_rt *rt, void *obj)
@@ -655,6 +716,8 @@ int		ft_isonecoordex(t_rt *rt, void *obj)
 	if (coord->x == rt->objxmin || coord->x == rt->objxmax)
 		return (1);
 	if (coord->y == rt->objymin || coord->y == rt->objymax)
+		return (1);
+	if (coord->z == rt->objzmin || coord->z == rt->objzmax)
 		return (1);
 	return (0);
 }
@@ -675,20 +738,20 @@ void	ft_moveobj(t_rt *rt, t_obj *obj, t_coord *dep)
 
 void	ft_printfirst(t_rt *rt)
 {
-//	ft_constructtree(rt);
+	ft_constructtree(rt);
 	ft_printobjlist(rt, rt->obj);
 }
 
 int	ft_key_hook(int keycode, t_rt *rt)
 {
 	if (keycode == 65361)
-		ft_moveobj(rt, rt->cam, ft_makecoord(rt, -10, 0));
+		ft_moveobj(rt, rt->cam, ft_makecoord(rt, -10, 0, 0));
 	if (keycode == 65362)
-		ft_moveobj(rt, rt->cam, ft_makecoord(rt, 0, -10));
+		ft_moveobj(rt, rt->cam, ft_makecoord(rt, 0, -10, 0));
 	if (keycode == 65363)
-		ft_moveobj(rt, rt->cam, ft_makecoord(rt, 10, 0));
+		ft_moveobj(rt, rt->cam, ft_makecoord(rt, 10, 0, 0));
 	if (keycode == 65364)
-		ft_moveobj(rt, rt->cam, ft_makecoord(rt, 0, 10));
+		ft_moveobj(rt, rt->cam, ft_makecoord(rt, 0, 10, 0));
 	if (keycode == 65307)
 		ft_quit(rt);
 	ft_clearimg(rt);
@@ -910,6 +973,8 @@ t_rt	*ft_initrt(char **argv)
 	rt->objxmax = -200000000;
 	rt->objymin = 200000000;
 	rt->objymax = -200000000;
+	rt->objzmin = 200000000;
+	rt->objzmax = -200000000;
 	rt->xsize = 1400;
 	rt->ysize = 1400;
 	rt->image.origin = 0;

@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 21:00:57 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/20 19:33:04 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/21 20:27:38 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_bresenhamthreesix(t_rt *rt, t_coord one, t_coord two, int color)
 	dy = dy * 2;
 	while (1)
 	{
-		ft_printpixelimg(rt, ft_makecoord(rt, one.x, one.y), color);
+		ft_printpixelimg(rt, ft_makecoord(rt, one.x, one.y, 0), color);
 		one.x++;
 		if (one.x == two.x)
 			break ;
@@ -51,7 +51,7 @@ void	ft_bresenhamfourfive(t_rt *rt, t_coord one, t_coord two, int color)
 	dy = dy * 2;
 	while (1)
 	{
-		ft_printpixelimg(rt, ft_makecoord(rt, one.x, one.y), color);
+		ft_printpixelimg(rt, ft_makecoord(rt, one.x, one.y, 0), color);
 		one.x++;
 		if (one.x == two.x)
 			break ;
@@ -77,7 +77,7 @@ void	ft_bresenhamtwoseven(t_rt *rt, t_coord one, t_coord two, int color)
 	dx = dx * 2;
 	while (1)
 	{
-		ft_printpixelimg(rt, ft_makecoord(rt, one.x, one.y), color);
+		ft_printpixelimg(rt, ft_makecoord(rt, one.x, one.y, 0), color);
 		one.y--;
 		if (one.y == two.y)
 			break ;
@@ -116,7 +116,7 @@ void	ft_bresenham(t_rt *rt, t_coord one, t_coord two, int color)
 				ft_bresenhamtwoseven(rt, one, two, color);
 		}
 	}
-	ft_printpixelimg(rt, ft_makecoord(rt, two.x, two.y), color);
+	ft_printpixelimg(rt, ft_makecoord(rt, two.x, two.y, 0), color);
 }
 
 void	ft_printdroite(t_rt *rt, t_coord one, t_coord two, int color)

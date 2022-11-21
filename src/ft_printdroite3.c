@@ -6,13 +6,13 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 21:02:08 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/21 19:50:15 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/21 20:35:59 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-t_coord	*ft_makecoord(t_rt *rt, int x, int y)
+t_coord	*ft_makecoord(t_rt *rt, float x, float y, float z)
 {
 	t_coord	*coord;
 
@@ -21,6 +21,7 @@ t_coord	*ft_makecoord(t_rt *rt, int x, int y)
 		ft_exit(rt, "malloc error\n");
 	coord->x = x;
 	coord->y = y;
+	coord->z = z;
 	return (coord);
 }
 
@@ -33,7 +34,7 @@ void	ft_swapcoord(t_coord *a, t_coord *b)
 	*b = mem;
 }
 
-void	ft_swap(int *a, int *b)
+void	ft_swap(float *a, float *b)
 {
 	int	mem;
 
@@ -55,7 +56,7 @@ void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two, int color)
 	dx = dx * 2;
 	while (1)
 	{
-		ft_printpixelimg(rt, ft_makecoord(rt, one.x, one.y), color);
+		ft_printpixelimg(rt, ft_makecoord(rt, one.x, one.y, 0), color);
 		one.y++;
 		if (one.y == two.y)
 			break ;
