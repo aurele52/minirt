@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 21:07:03 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/21 01:49:29 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/21 19:46:36 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,8 +342,7 @@ t_pos	*ft_lstdup(t_pos *pos, t_pos *garbage)
 int	ft_calcfin(t_pos *obj, t_voxel *voxel, int depth)
 {
 	(void)voxel;
-	(void)obj;
-	if (depth >= 10)
+	if (*obj->size <= 1 || depth >= 20)
 		return (1);
 	return (0);
 }
@@ -375,6 +374,27 @@ t_bt	*ft_newnoeu(t_rt *rt, t_pos *obj, t_bt *right, t_bt *left)
 	return (new);
 }
 
+void	ft_printpl2(t_rt *rt, t_pl *pl, t_voxel *voxel)
+{
+	t_coord	*first;
+	t_coord	*second;
+
+	first = ft_makecoord(rt, pl->coord->x + rt->xsize * pl->ori->x, pl->coord->y + rt->ysize * pl->ori->y);
+	if (first->x > voxel->first->x)
+		first->x = voxel->first->x;
+	if (first->y > voxel->first->y)
+		first->y = voxel->first->y;
+	second = ft_makecoord(rt, pl->coord->x + -(rt->xsize * pl->ori->x), pl->coord->y + -(rt->ysize * pl->ori->y));
+	if (second->x < voxel->second->x)
+		second->x = voxel->second->x;
+	if (second->y < voxel->second->y)
+		second->y = voxel->second->y;
+	ft_printdroite(rt, *second, *first, pl->color);
+	pl->color = pl->color + 10000;
+	first = ft_makecoord(rt, pl->coord->x + 10 * pl->ori->y, pl->coord->y + 10 * pl->ori->x);
+	ft_printdroite(rt, *pl->coord, *first, pl->color);
+}
+
 t_bt	*ft_voxeluconstruct(t_rt *rt, t_pos *obj, t_voxel *voxel, int depth)
 {
 	t_pl	*plan;
@@ -386,7 +406,7 @@ t_bt	*ft_voxeluconstruct(t_rt *rt, t_pos *obj, t_voxel *voxel, int depth)
 	if (ft_calcfin(obj, voxel, depth))
 		return (ft_newleaf(rt, obj));
 	plan = ft_findsplitvoxel(rt, obj, voxel, depth % 2);
-	ft_printpl(rt, plan);
+	ft_printpl2(rt, plan, voxel);
 	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr, rt->image.origin, 0, 0);
 	voxeldroite = ft_splitvoxeldroite(rt, voxel, plan, depth % 2);
 	voxelgauche = ft_splitvoxelgauche(rt, voxel, plan, depth % 2);
@@ -655,7 +675,7 @@ void	ft_moveobj(t_rt *rt, t_obj *obj, t_coord *dep)
 
 void	ft_printfirst(t_rt *rt)
 {
-	ft_constructtree(rt);
+//	ft_constructtree(rt);
 	ft_printobjlist(rt, rt->obj);
 }
 
@@ -905,7 +925,7 @@ int	main(int argc, char **argv)
 		return (0);
 	rt = ft_initrt(argv);
 	ft_inittruert(rt);
-	ft_constructtree(rt);
+	ft_printfirst(rt);
 	mlx_hook(rt->win_ptr, 17, 0, ft_quit, rt);
 	mlx_key_hook(rt->win_ptr, &ft_key_hook, rt);
 	mlx_loop(rt->mlx_ptr);
