@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/08 18:19:30 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/08 19:15:42 by audreyer         ###   ########.fr       */
+/*   Created: 2022/11/20 19:48:55 by audreyer          #+#    #+#             */
+/*   Updated: 2022/11/20 19:53:29 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ void	ft_printsp(t_rt *rt, t_sp *sp)
 	m = 5 - 4 * sp->rayon;
 	while (x <= y)
 	{
-		ft_printpixelimg(rt, ft_makecoord(rt, x + sp->coord->x, y + sp->coord->y, sp->color));
-		ft_printpixelimg(rt, ft_makecoord(rt, y + sp->coord->x, x + sp->coord->y, sp->color));
-		ft_printpixelimg(rt, ft_makecoord(rt, -x + sp->coord->x, y + sp->coord->y, sp->color));
-		ft_printpixelimg(rt, ft_makecoord(rt, -y + sp->coord->x, x + sp->coord->y, sp->color));
-		ft_printpixelimg(rt, ft_makecoord(rt, x + sp->coord->x, -y + sp->coord->y, sp->color));
-		ft_printpixelimg(rt, ft_makecoord(rt, y + sp->coord->x, -x + sp->coord->y, sp->color));
-		ft_printpixelimg(rt, ft_makecoord(rt, -x + sp->coord->x, -y + sp->coord->y, sp->color));
-		ft_printpixelimg(rt, ft_makecoord(rt, -y + sp->coord->x, -x + sp->coord->y, sp->color));
+		ft_printpixelimg(rt, ft_makecoord(rt, x + sp->coord->x, y + sp->coord->y), sp->color);
+		ft_printpixelimg(rt, ft_makecoord(rt, y + sp->coord->x, x + sp->coord->y), sp->color);
+		ft_printpixelimg(rt, ft_makecoord(rt, -x + sp->coord->x, y + sp->coord->y), sp->color);
+		ft_printpixelimg(rt, ft_makecoord(rt, -y + sp->coord->x, x + sp->coord->y), sp->color);
+		ft_printpixelimg(rt, ft_makecoord(rt, x + sp->coord->x, -y + sp->coord->y), sp->color);
+		ft_printpixelimg(rt, ft_makecoord(rt, y + sp->coord->x, -x + sp->coord->y), sp->color);
+		ft_printpixelimg(rt, ft_makecoord(rt, -x + sp->coord->x, -y + sp->coord->y), sp->color);
+		ft_printpixelimg(rt, ft_makecoord(rt, -y + sp->coord->x, -x + sp->coord->y), sp->color);
 		if (m > 0)
 		{
 			y = y - 1;

@@ -6,21 +6,21 @@
 #    By: audreyer <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 22:50:22 by audreyer          #+#    #+#              #
-#    Updated: 2022/11/08 18:47:01 by audreyer         ###   ########.fr        #
+#    Updated: 2022/11/20 19:02:53 by audreyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = rt
 
-CC = gcc
+CC = clang
 
 FLAG = -g -Wall -Werror -Wextra 
 
 SRC=	src/ft_printdroite2.c	\
+		src/main.c	\
 		src/ft_printdroite3.c	\
 		src/ft_printdroite.c	\
 		src/ft_printsp.c	\
-		src/main.c	\
 		src/ft_cast.c	\
 		src/libft/ft_strjoin.c	\
 		src/libft/ft_putnbrfd.c	\

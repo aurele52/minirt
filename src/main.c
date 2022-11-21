@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 21:07:03 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/10 16:16:53 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/21 01:49:29 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_quit(t_rt *rt)
 	return (0);
 }
 
-void	ft_printpixelimg(t_rt *rt, t_coord *print)
+void	ft_printpixelimg(t_rt *rt, t_coord *print, int color)
 {
 	int		pos;
 	char	*pixel;
@@ -36,12 +36,12 @@ void	ft_printpixelimg(t_rt *rt, t_coord *print)
 	pos = (print->y * rt->image.size_line
 			+ print->x * (rt->image.bits_per_pixel / 8));
 	pixel = rt->image.imgaddress + pos;
-	*(int *)pixel = print->color;
+	*(int *)pixel = color;
 }
 
 void	ft_printseg(t_rt *rt, t_seg *seg)
 {
-	ft_printdroite(rt, *seg->first, *seg->second);
+	ft_printdroite(rt, *seg->first, *seg->second, seg->color);
 }
 
 void	ft_printvoxel(t_rt *rt, t_voxel *voxel)
@@ -49,12 +49,12 @@ void	ft_printvoxel(t_rt *rt, t_voxel *voxel)
 	t_coord	third;
 	t_coord	fourth;
 
-	third = *ft_makecoord(rt, voxel->first->x, voxel->second->y, voxel->color);
-	fourth = *ft_makecoord(rt, voxel->second->x, voxel->first->y, voxel->color);
-	ft_printdroite(rt, *voxel->first, third);
-	ft_printdroite(rt, third, *voxel->second);
-	ft_printdroite(rt, *voxel->second, fourth);
-	ft_printdroite(rt, fourth, *voxel->first);
+	third = *ft_makecoord(rt, voxel->first->x, voxel->second->y);
+	fourth = *ft_makecoord(rt, voxel->second->x, voxel->first->y);
+	ft_printdroite(rt, *voxel->first, third, voxel->color);
+	ft_printdroite(rt, third, *voxel->second, voxel->color);
+	ft_printdroite(rt, *voxel->second, fourth, voxel->color);
+	ft_printdroite(rt, fourth, *voxel->first, voxel->color);
 }
 
 void	ft_printpl(t_rt *rt, t_pl *pl)
@@ -62,9 +62,12 @@ void	ft_printpl(t_rt *rt, t_pl *pl)
 	t_coord	*first;
 	t_coord	*second;
 
-	first = ft_makecoord(rt, pl->coord->x + rt->xsize * pl->ori->x, pl->coord->y + rt->ysize * pl->ori->y, pl->color);
-	second = ft_makecoord(rt, pl->coord->x + -(rt->xsize * pl->ori->x), pl->coord->y + -(rt->ysize * pl->ori->y), pl->color);
-	ft_printdroite(rt, *second, *first);
+	first = ft_makecoord(rt, pl->coord->x + rt->xsize * pl->ori->x, pl->coord->y + rt->ysize * pl->ori->y);
+	second = ft_makecoord(rt, pl->coord->x + -(rt->xsize * pl->ori->x), pl->coord->y + -(rt->ysize * pl->ori->y));
+	ft_printdroite(rt, *second, *first, pl->color);
+	pl->color = pl->color + 10000;
+	first = ft_makecoord(rt, pl->coord->x + 10 * pl->ori->y, pl->coord->y + 10 * pl->ori->x);
+	ft_printdroite(rt, *pl->coord, *first, pl->color);
 }
 
 void	ft_printcam(t_rt *rt, t_cam *cam)
@@ -74,43 +77,19 @@ void	ft_printcam(t_rt *rt, t_cam *cam)
 	int	x2;
 	int	y2;
 
-	(void)cam;
-	x = rt->cam->coord->x + 10;
-	y = rt->cam->coord->y;
-	x2 = rt->cam->coord->x - 10;
-	y2 = rt->cam->coord->y;
-	ft_printdroite(rt, *ft_makecoord(rt, x2, y2, 123233), *ft_makecoord(rt, x, y, 123233));
-	x = rt->cam->coord->x;
-	y = rt->cam->coord->y + 10;
-	x2 = rt->cam->coord->x;
-	y2 = rt->cam->coord->y - 10;
-	ft_printdroite(rt, *ft_makecoord(rt, x2, y2, 123233), *ft_makecoord(rt, x, y, 123233));
+	x = cam->coord->x + 10;
+	y = cam->coord->y;
+	x2 = cam->coord->x - 10;
+	y2 = cam->coord->y;
+	ft_printdroite(rt, *ft_makecoord(rt, x2, y2), *ft_makecoord(rt, x, y), cam->color);
+	x = cam->coord->x;
+	y = cam->coord->y + 10;
+	x2 = cam->coord->x;
+	y2 = cam->coord->y - 10;
+	ft_printdroite(rt, *ft_makecoord(rt, x2, y2), *ft_makecoord(rt, x, y), cam->color);
 }
 
-void	ft_printobj(t_rt *rt)
-{
-	t_list	*liste;
-	int		mem;
-
-	mem = 0;
-	liste = rt->obj->start;
-	while (liste != rt->obj->start || mem++ == 0)
-	{
-		if (ft_type(liste) == SEG)
-			ft_printseg(rt, ft_seg(liste));
-		if (ft_type(liste) == VOXEL)
-			ft_printvoxel(rt, ft_voxel(liste));
-		if (ft_type(liste) == SP)
-			ft_printsp(rt, ft_sp(liste));
-		if (ft_type(liste) == PL)
-			ft_printpl(rt, ft_pl(liste));
-		if (ft_type(liste) == C)
-			ft_printcam(rt, ft_C(liste));
-		liste = liste->next;
-	}
-}
-
-t_voxel	*ft_makenewvoxel(t_rt *rt, t_coord *coord1, t_coord *coord2, int color)
+t_voxel	*ft_makenewvoxel(t_rt *rt, t_coord *coord1, t_coord *coord2, int *color)
 {
 	t_voxel	*voxel;
 
@@ -119,9 +98,7 @@ t_voxel	*ft_makenewvoxel(t_rt *rt, t_coord *coord1, t_coord *coord2, int color)
 		ft_exit(rt, "malloc error\n");
 	voxel->first = coord1;
 	voxel->second = coord2;
-	voxel->first->color = color;
-	voxel->second->color = color;
-	voxel->color = color;
+	voxel->color = *color;
 	return (voxel);
 }
 
@@ -130,37 +107,328 @@ t_voxel *ft_makefirstvoxel(t_rt *rt)
 	t_coord	*coord1;
 	t_coord	*coord2;
 
-	coord1 = ft_makecoord(rt, rt->objxmax, rt->objymax, 5555);
-	coord2 = ft_makecoord(rt, rt->objxmin, rt->objymin, 5555);
-	return (ft_makenewvoxel(rt, coord1, coord2, 5555));
+	coord1 = ft_makecoord(rt, rt->objxmax, rt->objymax);
+	coord2 = ft_makecoord(rt, rt->objxmin, rt->objymin);
+	return (ft_makenewvoxel(rt, coord1, coord2, rt->color));
+}
+
+t_coord	*ft_voxelsplit(t_rt *rt, t_voxel *voxel, int depth)
+{
+	int	x;
+	int	y;
+
+	x = 0;
+	y = 0;
+	if (depth == 0)
+	{
+		x = (-voxel->second->x + voxel->first->x) / 2 + voxel->second->x;
+		y = (-voxel->second->y + voxel->first->y) / 2 + voxel->second->y;
+	}
+	if (depth == 1)
+	{
+		x = (-voxel->second->x + voxel->first->x) / 2 + voxel->second->x;
+		y = (-voxel->second->y + voxel->first->y) / 2 + voxel->second->y;
+	}
+	return (ft_makecoord(rt, x, y));
+}
+
+t_pl	*ft_findsplitvoxel(t_rt *rt, t_pos *obj, t_voxel *voxel, int depth)
+{
+	t_pl	*pl;
+
+	(void)obj;
+	pl = ft_malloc(sizeof(t_pl), rt->garbage);
+	if (!pl)
+		ft_exit(rt, "malloc error\n");
+	if (depth == 0)
+	{
+		pl->coord = ft_voxelsplit(rt, voxel, depth);
+		pl->ori = (t_ori *)ft_makecoord(rt, 0, 1);
+		pl->color = 77777;
+	}
+	if (depth == 1)
+	{
+		pl->coord = ft_voxelsplit(rt, voxel, depth);
+		pl->ori = (t_ori *)ft_makecoord(rt, 1, 0);
+		pl->color = 8888888;
+	}
+	return (pl);
+}
+
+void	ft_printobj(t_rt *rt, t_obj *obj)
+{
+	if (obj->type == SEG)
+		ft_printseg(rt, (t_seg *)obj->obj);
+	if (obj->type == VOXEL)
+		ft_printvoxel(rt, (t_voxel *)obj->obj);
+	if (obj->type == SP)
+		ft_printsp(rt, (t_sp *)obj->obj);
+	if (obj->type == PL)
+		ft_printpl(rt, (t_pl *)obj->obj);
+	if (obj->type == C)
+		ft_printcam(rt, (t_cam *)obj->obj);
+}
+
+void	ft_printobjlist(t_rt *rt, t_pos *print)
+{
+	t_list	*liste;
+	int		mem;
+
+	mem = 0;
+	liste = print->start;
+	while (liste != print->start || mem++ == 0)
+	{
+		ft_printobj(rt, (t_obj *)liste->content);
+		liste = liste->next;
+	}
+}
+
+t_voxel	*ft_splitvoxelgauche(t_rt *rt, t_voxel *voxel, t_pl *pl, int depth)
+{
+	t_coord	*coord1;
+	t_coord	*coord2;
+
+	if (depth == 0)
+	{
+		coord1 = ft_makecoord(rt, voxel->first->x, voxel->first->y);
+		coord2 = ft_makecoord(rt, pl->coord->x, voxel->second->y);
+	}
+	if (depth == 1)
+	{
+		coord1 = ft_makecoord(rt, voxel->first->x, voxel->first->y);
+		coord2 = ft_makecoord(rt, voxel->second->x, pl->coord->y);
+	}
+	return (ft_makenewvoxel(rt, coord1, coord2, rt->color));
+}
+
+t_voxel	*ft_splitvoxeldroite(t_rt *rt, t_voxel *voxel, t_pl *pl, int depth)
+{
+	t_coord	*coord1;
+	t_coord	*coord2;
+
+	if (depth == 0)
+	{
+		coord1 = ft_makecoord(rt, pl->coord->x, voxel->first->y);
+		coord2 = ft_makecoord(rt, voxel->second->x, voxel->second->y);
+	}
+	if (depth == 1)
+	{
+		coord1 = ft_makecoord(rt, voxel->first->x, pl->coord->y);
+		coord2 = ft_makecoord(rt, voxel->second->x, voxel->second->y);
+	}
+	return (ft_makenewvoxel(rt, coord1, coord2, rt->color));
+}
+
+void	ft_coloradd(t_obj *obj, int color)
+{
+	t_pl *p;
+
+	p = (t_pl *)obj->obj;
+	p->color = p->color + color;
+}
+
+t_pos	*ft_objdroite(t_rt *rt, t_pl *pl, t_pos *obj, int depth)
+{
+	t_pos	*new;
+	t_list	*mem;
+	int		lol;
+
+	lol = 0;
+	new = ft_setpos(rt->garbage);
+	if (!new)
+		ft_exit(rt, "malloc error\n");
+	mem = obj->start;
+	if (!mem)
+		return (new);
+	while (mem != obj->start || !lol++)
+	{
+		if (((t_obj *)mem->content)->xmin < pl->coord->x && depth == 0)
+		{
+			ft_coloradd((t_obj *)mem->content, 777777);
+			mem = mem->next;
+			ft_lstnew(mem->back->content ,new, rt->garbage);
+		}
+		else if (((t_obj *)mem->content)->ymin < pl->coord->y && depth == 1)
+		{
+			ft_coloradd((t_obj *)mem->content, 777777);
+			mem = mem->next;
+			ft_lstnew(mem->back->content ,new, rt->garbage);
+		}
+		else
+			mem = mem->next;
+	}
+	return (new);
+}
+
+t_pos	*ft_objgauche(t_rt *rt, t_pl *pl, t_pos *obj, int depth)
+{
+	t_pos	*new;
+	t_list	*mem;
+	int		lol;
+
+	lol = 0;
+	new = ft_setpos(rt->garbage);
+	if (!new)
+		ft_exit(rt, "malloc error\n");
+	mem = obj->start;
+	if (!mem)
+		return (new);
+	while (mem != obj->start || !lol++)
+	{
+		if (((t_obj *)mem->content)->xmax > pl->coord->x && depth == 0)
+		{
+			ft_coloradd((t_obj *)mem->content, 799999);
+			mem = mem->next;
+			ft_lstnew(mem->back->content ,new, rt->garbage);
+		}
+		else if (((t_obj *)mem->content)->ymax > pl->coord->y && depth == 1)
+		{
+			ft_coloradd((t_obj *)mem->content, 799999);
+			mem = mem->next;
+			ft_lstnew(mem->back->content ,new, rt->garbage);
+		}
+		else
+			mem = mem->next;
+	}
+	return (new);
+}
+
+void	ft_clearobjlist(t_pl *pl, t_pos *obj, int depth)
+{
+	t_list	*mem;
+	int		lol;
+
+	lol = 0;
+	mem = obj->start;
+	if (!mem)
+		return ;
+	while (*mem->pos->size != 0 && (mem != obj->start || !lol++))
+	{
+		if ((((t_obj *)mem->content)->xmax != pl->coord->x || ((t_obj *)mem->content)->xmin != pl->coord->x) && depth == 0)
+		{
+			lol--;
+			mem = mem->next;
+			ft_lstdelone(mem->back ,0);
+		}
+		else if ((((t_obj *)mem->content)->ymax != pl->coord->y || ((t_obj *)mem->content)->ymin != pl->coord->y) && depth == 1)
+		{
+			lol--;
+			mem = mem->next;
+			ft_lstdelone(mem->back ,0);
+		}
+		else
+			mem = mem->next;
+	}
+}
+
+t_pos	*ft_lstdup(t_pos *pos, t_pos *garbage)
+{
+	t_pos	*new;
+	t_list	*liste;
+	int	i;
+
+	i = 0;
+	liste = pos->start;
+	new = ft_setpos(garbage);
+	while (i < *pos->size)
+	{
+		ft_lstnew(liste->content, new, garbage);
+		liste = liste->next;
+		i++;
+	}
+	return (new);
+}
+
+int	ft_calcfin(t_pos *obj, t_voxel *voxel, int depth)
+{
+	(void)voxel;
+	(void)obj;
+	if (depth >= 10)
+		return (1);
+	return (0);
+}
+
+t_bt	*ft_newleaf(t_rt *rt, t_pos *obj)
+{
+	t_bt *new;
+
+	new = ft_malloc(sizeof(t_bt), rt->garbage);
+	if (!new)
+		ft_exit(rt, "malloc error\n");
+	new->obj = obj;
+	new->right = 0;
+	new->racine = 0;
+	new->left = 0;
+	return (new);
+}
+
+t_bt	*ft_newnoeu(t_rt *rt, t_pos *obj, t_bt *right, t_bt *left)
+{
+	t_bt	*new;
+
+	new = ft_newleaf(rt, obj);
+	right->racine = new;
+	left->racine = new;
+	new->left = left;
+	new->right = right;
+	new->racine = 0;
+	return (new);
+}
+
+t_bt	*ft_voxeluconstruct(t_rt *rt, t_pos *obj, t_voxel *voxel, int depth)
+{
+	t_pl	*plan;
+	t_voxel	*voxeldroite;
+	t_voxel	*voxelgauche;
+	t_pos	*listevoxeldroite;
+	t_pos	*listevoxelgauche;
+
+	if (ft_calcfin(obj, voxel, depth))
+		return (ft_newleaf(rt, obj));
+	plan = ft_findsplitvoxel(rt, obj, voxel, depth % 2);
+	ft_printpl(rt, plan);
+	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr, rt->image.origin, 0, 0);
+	voxeldroite = ft_splitvoxeldroite(rt, voxel, plan, depth % 2);
+	voxelgauche = ft_splitvoxelgauche(rt, voxel, plan, depth % 2);
+	listevoxeldroite = ft_objdroite(rt, plan, obj, depth % 2);
+	listevoxelgauche = ft_objgauche(rt, plan, obj, depth % 2);
+	ft_clearobjlist(plan, obj, depth % 2);
+	ft_printobjlist(rt, rt->obj);
+	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr, rt->image.origin, 0, 0);
+	return (ft_newnoeu(rt, obj, ft_voxeluconstruct(rt, listevoxeldroite, voxeldroite, depth + 1), ft_voxeluconstruct(rt, listevoxelgauche, voxelgauche, depth + 1)));
 }
 /*
-t_noeu	*ft_voxeluconstruct(t_pos *obj, t_voxel *voxel)
-{
-	if (ft_calcfin(obj, voxel))
-		return (ft_newfeuille);
-	plan = ft_findsplitvoxel(obj, voxel);
-	voxelgauche = ft_splitvoxelgauche(voxel, plan);
-	voxeldoite = ft_splitvoxelgauche(voxel, plan);
-	listevoxeldroite = ft_objdroite(plan, obj);
-	listevoxelgauche = ft_objgauche(plan, obj);
-	return (ft_newnoeu(plan, ft_voxeluconstruct(listevoxeldroite, voxeldroit), ft_voxeluconstruct(listevoxelgauche, voxelgauche)));
-}
+t_noeu	*ft_constructtree(t_rt *rt)
 */
-//t_racine	*ft_constructtree(t_rt *rt)
 void	ft_constructtree(t_rt *rt)
 {
 	t_voxel	*voxel;
+//	t_pl	*plan;
+	int		depth;
+//	t_pos	*listevoxeldroite;
+//	t_pos	*listevoxelgauche;
+	t_pos	*start;
 
+	depth = 0;
+	start = ft_lstdup(rt->obj, rt->garbage);
 	voxel = ft_makefirstvoxel(rt);
 	ft_printvoxel(rt, voxel);
-//	return (ft_voxeluconstruct(obj, voxel));
-}
+//	plan = ft_findsplitvoxel(rt, start, voxel, depth);
+//	ft_printpl(rt, plan);
+//	ft_printvoxel(rt, ft_splitvoxeldroite(rt, voxel, plan, depth));
+//	ft_printvoxel(rt, ft_splitvoxelgauche(rt, voxel, plan, depth));
+//	listevoxeldroite = ft_objdroite(rt, plan, start, depth);
+//	listevoxelgauche = ft_objgauche(rt, plan, start, depth);
+//	ft_printobjlist(rt, listevoxeldroite);
+//	ft_printobjlist(rt, start);
+//	ft_printobjlist(rt, listevoxelgauche);
+	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr, rt->image.origin, 0, 0);
 
-void	ft_printfirst(t_rt *rt)
-{
-	ft_printobj(rt);
-	ft_constructtree(rt);
+
+//	depth = 1;
+//	plan = ft_findsplitvoxel(rt, rt->obj, voxel, depth);
+//	ft_printpl(rt, plan);
+	ft_voxeluconstruct(rt, start, voxel, 0);
 }
 
 void	ft_clearimg(t_rt *rt)
@@ -191,24 +459,6 @@ void	ft_clearimg(t_rt *rt)
 		y++;
 		x = 0;
 	}
-}
-
-int	ft_key_hook(int keycode, t_rt *rt)
-{
-	if (keycode == 65361)
-		rt->cam->coord->x = rt->cam->coord->x - 10;
-	if (keycode == 65362)
-		rt->cam->coord->y = rt->cam->coord->y - 10;
-	if (keycode == 65363)
-		rt->cam->coord->x = rt->cam->coord->x + 10;
-	if (keycode == 65364)
-		rt->cam->coord->y = rt->cam->coord->y + 10;
-	if (keycode == 65307)
-		ft_quit(rt);
-	ft_clearimg(rt);
-	ft_printfirst(rt);
-	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr, rt->image.origin, 0, 0);
-	return (keycode);
 }
 
 void	ft_inittruert(t_rt *rt)
@@ -242,7 +492,6 @@ t_coord	*ft_atoicoord(t_rt *rt, char *str)
 	if (str[i] == ',')
 		i++;
 	coord->y = ft_atoi(&str[i]);
-	coord->color = 0;
 	return (coord);
 }
 
@@ -264,16 +513,22 @@ t_ori	*ft_atoiori(t_rt *rt, char *str)
 	return (ori);
 }
 
-void	ft_calcsp(t_obj *objet, t_sp *sp)
+void	ft_calcsp(t_obj *objet)
 {
+	t_sp	*sp;
+
+	sp = (t_sp *)objet->obj;
 	objet->xmin = sp->coord->x - sp->rayon;
 	objet->xmax = sp->coord->x + sp->rayon;
 	objet->ymin = sp->coord->y - sp->rayon;
 	objet->ymax = sp->coord->y + sp->rayon;
 }
 
-void	ft_calcpl(t_obj *objet, t_pl *pl)
+void	ft_calcpl(t_obj *objet)
 {
+	t_pl	*pl;
+
+	pl = (t_pl *)objet->obj;
 	if (pl->ori->x == 0)
 	{
 		objet->xmin = pl->coord->x;
@@ -296,16 +551,22 @@ void	ft_calcpl(t_obj *objet, t_pl *pl)
 	}
 }
 
-void	ft_calcvoxel(t_obj *objet, t_voxel *voxel)
+void	ft_calcvoxel(t_obj *objet)
 {
+	t_voxel	*voxel;
+
+	voxel = (t_voxel *)objet->obj;
 	objet->xmin = ft_min(voxel->first->x, voxel->second->x);
 	objet->ymin = ft_min(voxel->first->y, voxel->second->y);
 	objet->xmax = ft_max(voxel->first->x, voxel->second->x);
 	objet->ymax = ft_max(voxel->first->y, voxel->second->y);
 }
 
-void	ft_calcC(t_obj *objet, t_cam *cam)
+void	ft_calcC(t_obj *objet)
 {
+	t_cam	*cam;
+
+	cam = (t_cam *)objet->obj;
 	objet->xmin = cam->coord->x;
 	objet->ymin = cam->coord->y;
 	objet->xmax = cam->coord->x;
@@ -314,8 +575,6 @@ void	ft_calcC(t_obj *objet, t_cam *cam)
 
 void	ft_calccoordobjrt(t_rt *rt, t_obj *obj)
 {
-	printf("rtxmin=%i\nrtymin=%i\nrtxmax=%i\nrtymax=%i\n", rt->objxmin, rt->objymin, rt->objxmax, rt->objymax);
-	printf("xmin=%i\nymin=%i\nxmax=%i\nymax=%i\n\n", obj->xmin, obj->ymin, obj->xmax, obj->ymax);
 	if (obj->xmin < rt->objxmin)
 		rt->objxmin = obj->xmin;
 	if (obj->ymin < rt->objymin)
@@ -326,6 +585,98 @@ void	ft_calccoordobjrt(t_rt *rt, t_obj *obj)
 		rt->objxmax = obj->xmax;
 }
 
+void	ft_recalc(t_rt *rt)
+{
+	t_list	*liste;
+	int		mem;
+
+	rt->objxmin = 200000000;
+	rt->objxmax = -200000000;
+	rt->objymin = 200000000;
+	rt->objymax = -200000000;
+	mem = 0;
+	liste = rt->obj->start;
+	while (liste != rt->obj->start || mem++ == 0)
+	{
+		ft_calccoordobjrt(rt, (t_obj *)liste->content);
+		liste = liste->next;
+	}
+}
+
+void	ft_calcobj(t_rt *rt, t_obj *objet)
+{
+	if (objet->type == SP)
+		ft_calcsp(objet);
+	else if (objet->type == VOXEL)
+		ft_calcvoxel(objet);
+	else if (objet->type == PL)
+		ft_calcpl(objet);
+	else if (objet->type == C)
+		ft_calcC(objet);
+	ft_calccoordobjrt(rt, objet);
+}
+
+void	ft_moveonecoord(void *obj, t_coord *coord)
+{
+	t_sp	*sp;
+
+	sp = (t_sp *)obj;
+	if (coord->x != 0)
+		sp->coord->x = sp->coord->x + coord->x;
+	if (coord->y != 0)
+		sp->coord->y = sp->coord->y + coord->y;
+}
+
+int		ft_isonecoordex(t_rt *rt, void *obj)
+{
+	t_coord	*coord;
+
+	coord = ((t_sp *)obj)->coord;
+	if (coord->x == rt->objxmin || coord->x == rt->objxmax)
+		return (1);
+	if (coord->y == rt->objymin || coord->y == rt->objymax)
+		return (1);
+	return (0);
+}
+
+void	ft_moveobj(t_rt *rt, t_obj *obj, t_coord *dep)
+{
+	int	mem;
+
+	if (obj->type == C || obj->type == SP)
+	{
+		mem = ft_isonecoordex(rt, obj->obj);
+		ft_moveonecoord((t_sp *)obj->obj, dep);
+		ft_calcobj(rt, obj);
+		if (mem)
+			ft_recalc(rt);
+	}
+}
+
+void	ft_printfirst(t_rt *rt)
+{
+	ft_constructtree(rt);
+	ft_printobjlist(rt, rt->obj);
+}
+
+int	ft_key_hook(int keycode, t_rt *rt)
+{
+	if (keycode == 65361)
+		ft_moveobj(rt, rt->cam, ft_makecoord(rt, -10, 0));
+	if (keycode == 65362)
+		ft_moveobj(rt, rt->cam, ft_makecoord(rt, 0, -10));
+	if (keycode == 65363)
+		ft_moveobj(rt, rt->cam, ft_makecoord(rt, 10, 0));
+	if (keycode == 65364)
+		ft_moveobj(rt, rt->cam, ft_makecoord(rt, 0, 10));
+	if (keycode == 65307)
+		ft_quit(rt);
+	ft_clearimg(rt);
+	ft_printfirst(rt);
+	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr, rt->image.origin, 0, 0);
+	return (keycode);
+}
+
 void	*ft_makeobj(t_rt *rt, void *obj, int type)
 {
 	t_obj	*objet;
@@ -333,17 +684,11 @@ void	*ft_makeobj(t_rt *rt, void *obj, int type)
 	objet = ft_malloc(sizeof(t_obj), rt->garbage);
 	if (!obj)
 		ft_exit(rt, "malloc error\n");
-	if (type == SP)
-		ft_calcsp(objet, (t_sp *)obj);
-	else if (type == VOXEL)
-		ft_calcvoxel(objet, (t_voxel *)obj);
-	else if (type == PL)
-		ft_calcpl(objet, (t_pl *)obj);
-	else if (type == C)
-		ft_calcC(objet, (t_cam *)obj);
 	objet->type = type;
 	objet->obj = obj;
-	ft_calccoordobjrt(rt, objet);
+	if (type == C)
+		rt->cam = objet;
+	ft_calcobj(rt, objet);
 	return (objet);
 }
 
@@ -351,7 +696,6 @@ void	*ft_makeseg(t_rt *rt, char *str)
 {
 	t_seg	*seg;
 	int		i;
-	int		color;
 
 	i = 0;
 	seg = ft_malloc(sizeof(t_seg), rt->garbage);
@@ -369,10 +713,7 @@ void	*ft_makeseg(t_rt *rt, char *str)
 		i++;
 	while (str[i] == ' ')
 		i++;
-	color = ft_atoi(&str[i]);
-	seg->first->color = color;
-	seg->second->color = color;
-	seg->color = color;
+	seg->color = ft_atoi(&str[i]);
 	return (ft_makeobj(rt, seg, SEG));
 }
 
@@ -380,7 +721,6 @@ void	*ft_makevoxel(t_rt *rt, char *str)
 {
 	t_voxel	*voxel;
 	int		i;
-	int		color;
 
 	i = 0;
 	voxel = ft_malloc(sizeof(t_voxel), rt->garbage);
@@ -398,10 +738,7 @@ void	*ft_makevoxel(t_rt *rt, char *str)
 		i++;
 	while (str[i] == ' ')
 		i++;
-	color = ft_atoi(&str[i]);
-	voxel->first->color = color;
-	voxel->second->color = color;
-	voxel->color = color;
+	voxel->color = ft_atoi(&str[i]);
 	return (ft_makeobj(rt, voxel, VOXEL));
 }
 
@@ -409,7 +746,6 @@ void	*ft_makesp(t_rt *rt, char *str)
 {
 	t_sp	*sp;
 	int		i;
-	int		color;
 
 	i = 0;
 	sp = ft_malloc(sizeof(t_sp), rt->garbage);
@@ -427,9 +763,7 @@ void	*ft_makesp(t_rt *rt, char *str)
 		i++;
 	while (str[i] == ' ')
 		i++;
-	color = ft_atoi(&str[i]);
-	sp->coord->color = color;
-	sp->color = color;
+	sp->color = ft_atoi(&str[i]);
 	return (ft_makeobj(rt, sp, SP));
 }
 
@@ -437,7 +771,6 @@ void	*ft_makepl(t_rt *rt, char *str)
 {
 	t_pl	*pl;
 	int		i;
-	int		color;
 
 	i = 0;
 	pl = ft_malloc(sizeof(t_pl), rt->garbage);
@@ -455,9 +788,7 @@ void	*ft_makepl(t_rt *rt, char *str)
 		i++;
 	while (str[i] == ' ')
 		i++;
-	color = ft_atoi(&str[i]);
-	pl->coord->color = color;
-	pl->color = color;
+	pl->color = ft_atoi(&str[i]);
 	return (ft_makeobj(rt, pl, PL));
 }
 
@@ -465,7 +796,6 @@ void	*ft_makecam(t_rt *rt, char *str)
 {
 	t_cam	*cam;
 	int		i;
-	int		color;
 
 	i = 0;
 	cam = ft_malloc(sizeof(t_cam), rt->garbage);
@@ -474,10 +804,7 @@ void	*ft_makecam(t_rt *rt, char *str)
 	while (str[i] == ' ')
 		i++;
 	cam->coord = ft_atoicoord(rt, &str[i]);
-	rt->cam = cam;
-	color = 999;
-	cam->coord->color = color;
-	cam->color = color;
+	cam->color = 999;
 	return (ft_makeobj(rt, cam, C));
 }
 
@@ -529,6 +856,14 @@ void	ft_open(t_rt *rt, char *str)
 	}
 }
 
+void	ft_rtcolor(t_rt *rt)
+{
+	rt->color = ft_malloc(sizeof(int), rt->garbage);
+	if (!rt->color)
+		ft_exit(rt, "malloc error\n");
+	*rt->color = 777777;
+}
+
 t_rt	*ft_initrt(char **argv)
 {
 	t_rt	*rt;
@@ -548,6 +883,7 @@ t_rt	*ft_initrt(char **argv)
 	rt->obj = ft_setpos(garbage);
 	if (!rt->obj)
 		ft_exit(rt, "error malloc");
+	ft_rtcolor(rt);
 	rt->win_ptr = 0;
 	rt->mlx_ptr = 0;
 	rt->objxmin = 200000000;
@@ -569,7 +905,7 @@ int	main(int argc, char **argv)
 		return (0);
 	rt = ft_initrt(argv);
 	ft_inittruert(rt);
-	ft_printfirst(rt);
+	ft_constructtree(rt);
 	mlx_hook(rt->win_ptr, 17, 0, ft_quit, rt);
 	mlx_key_hook(rt->win_ptr, &ft_key_hook, rt);
 	mlx_loop(rt->mlx_ptr);

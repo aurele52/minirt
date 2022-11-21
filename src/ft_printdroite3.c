@@ -6,13 +6,13 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 21:02:08 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/08 14:10:30 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/20 19:41:23 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-t_coord	*ft_makecoord(t_rt *rt, int x, int y, int color)
+t_coord	*ft_makecoord(t_rt *rt, int x, int y)
 {
 	t_coord	*coord;
 
@@ -21,7 +21,6 @@ t_coord	*ft_makecoord(t_rt *rt, int x, int y, int color)
 		ft_exit(rt, "malloc error\n");
 	coord->x = x;
 	coord->y = y;
-	coord->color = color;
 	return (coord);
 }
 
@@ -43,7 +42,7 @@ void	ft_swap(int *a, int *b)
 	*b = mem;
 }
 
-void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two)
+void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two, int color)
 {
 	int	e;
 	int	dy;
@@ -56,7 +55,7 @@ void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two)
 	dx = dx * 2;
 	while (1)
 	{
-		ft_printpixelimg(rt, ft_makecoord(rt, one.x, one.y, one.color));
+		ft_printpixelimg(rt, ft_makecoord(rt, one.x, one.y), color);
 		one.y++;
 		if (one.y == two.y)
 			break ;

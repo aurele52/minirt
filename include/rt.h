@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:22:31 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/09 18:14:49 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/21 01:04:28 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ typedef struct s_coord
 {
 	int	x;
 	int	y;
-	int	color;
 }	t_coord;
 
 typedef struct s_ori
@@ -56,36 +55,36 @@ typedef struct s_ori
 
 typedef struct s_cam
 {
+	int	color;
 	t_coord	*coord;
-	int		color;
 }	t_cam;
 
 typedef struct s_sp
 {
+	int	color;
 	t_coord	*coord;
 	int	rayon;
-	int	color;
 }	t_sp;
 
 typedef struct s_pl
 {
+	int	color;
 	t_coord	*coord;
 	t_ori	*ori;
-	int	color;
 }	t_pl;
 
 typedef struct s_seg
 {
+	int	color;
 	t_coord	*first;
 	t_coord	*second;
-	int	color;
 }	t_seg;
 
 typedef struct s_voxel
 {
+	int	color;
 	t_coord	*first;
 	t_coord	*second;
-	int	color;
 }	t_voxel;
 
 enum e_objtype
@@ -97,13 +96,13 @@ enum e_objtype
 	SEG
 };
 
-typedef struct s_binarytree
+typedef struct s_bt
 {
 	t_pos	*obj;
-	struct s_binarytree *par;
-	struct s_binarytree *av;
-	struct s_binarytree *ar;
-}	t_binarytree;
+	struct s_bt *racine;
+	struct s_bt *left;
+	struct s_bt *right;
+}	t_bt;
 
 typedef struct s_obj
 {
@@ -136,7 +135,8 @@ typedef struct s_rt
 	int			objymin;
 	int			objxmax;
 	int			objymax;
-	t_cam		*cam;
+	int			*color;
+	t_obj		*cam;
 	t_pos		*obj;
 }	t_rt;
 
@@ -159,20 +159,20 @@ int		ft_type(t_list *liste);
 
 /*droite*/
 
-void	ft_printsamey(t_rt *rt, t_coord one, t_coord two);
-void	ft_printdiagonefour(t_rt *rt, t_coord one, t_coord two);
-void	ft_printdiagtwothree(t_rt *rt, t_coord one, t_coord two);
-void	ft_printdiag(t_rt *rt, t_coord one, t_coord two);
-void	ft_printsamex(t_rt *rt, t_coord one, t_coord two);
-void	ft_printdroite(t_rt *rt, t_coord one, t_coord two);
-void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two);
+void	ft_printsamey(t_rt *rt, t_coord one, t_coord two, int color);
+void	ft_printdiagonefour(t_rt *rt, t_coord one, t_coord two, int color);
+void	ft_printdiagtwothree(t_rt *rt, t_coord one, t_coord two, int color);
+void	ft_printdiag(t_rt *rt, t_coord one, t_coord two, int color);
+void	ft_printsamex(t_rt *rt, t_coord one, t_coord two, int color);
+void	ft_printdroite(t_rt *rt, t_coord one, t_coord two, int color);
+void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two, int color);
 
 /*utils*/
 
 void	ft_swapcoord(t_coord *a, t_coord *b);
 void	ft_swap(int *a, int *b);
-void	ft_printpixelimg(t_rt *rt, t_coord *print);
-t_coord	*ft_makecoord(t_rt *rt, int x, int y, int color);
+void	ft_printpixelimg(t_rt *rt, t_coord *print, int color);
+t_coord	*ft_makecoord(t_rt *rt, int x, int y);
 
 /*Sphere*/
 
