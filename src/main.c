@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 21:07:03 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/21 20:59:40 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/22 16:34:12 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,19 +135,19 @@ t_pl	*ft_findsplitvoxel(t_rt *rt, t_pos *obj, t_voxel *voxel, int depth)
 	if (depth == 0)
 	{
 		pl->coord = ft_voxelsplit(rt, voxel);
-		pl->ori = (t_ori *)ft_makecoord(rt, 0, 1, 0);
+		pl->ori = ft_makecoord(rt, 0, 1, 0);
 		pl->color = 77777;
 	}
 	if (depth == 1)
 	{
 		pl->coord = ft_voxelsplit(rt, voxel);
-		pl->ori = (t_ori *)ft_makecoord(rt, 1, 0, 0);
+		pl->ori = ft_makecoord(rt, 1, 0, 0);
 		pl->color = 8888888;
 	}
 	if (depth == 2)
 	{
 		pl->coord = ft_voxelsplit(rt, voxel);
-		pl->ori = (t_ori *)ft_makecoord(rt, 0, 0, 1);
+		pl->ori = ft_makecoord(rt, 0, 0, 1);
 		pl->color = 8888888;
 	}
 	return (pl);
@@ -367,10 +367,12 @@ t_pos	*ft_lstdup(t_pos *pos, t_pos *garbage)
 
 int	ft_calcfin(t_pos *obj, t_voxel *voxel, int depth)
 {
-	(void)voxel;
-	if (*obj->size <= 1 || depth >= 10)
+	if (*obj->size <= 1)
 		return (1);
 	return (0);
+	(void)voxel;
+	(void)obj;
+	(void)depth;
 }
 
 t_bt	*ft_newleaf(t_rt *rt, t_pos *obj)
@@ -450,31 +452,12 @@ t_noeu	*ft_constructtree(t_rt *rt)
 void	ft_constructtree(t_rt *rt)
 {
 	t_voxel	*voxel;
-//	t_pl	*plan;
-	int		depth;
-//	t_pos	*listevoxeldroite;
-//	t_pos	*listevoxelgauche;
 	t_pos	*start;
 
-	depth = 0;
 	start = ft_lstdup(rt->obj, rt->garbage);
 	voxel = ft_makefirstvoxel(rt);
 	ft_printvoxel(rt, voxel);
-//	plan = ft_findsplitvoxel(rt, start, voxel, depth);
-//	ft_printpl(rt, plan);
-//	ft_printvoxel(rt, ft_splitvoxeldroite(rt, voxel, plan, depth));
-//	ft_printvoxel(rt, ft_splitvoxelgauche(rt, voxel, plan, depth));
-//	listevoxeldroite = ft_objdroite(rt, plan, start, depth);
-//	listevoxelgauche = ft_objgauche(rt, plan, start, depth);
-//	ft_printobjlist(rt, listevoxeldroite);
-//	ft_printobjlist(rt, start);
-//	ft_printobjlist(rt, listevoxelgauche);
 	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr, rt->image.origin, 0, 0);
-
-
-//	depth = 1;
-//	plan = ft_findsplitvoxel(rt, rt->obj, voxel, depth);
-//	ft_printpl(rt, plan);
 	ft_voxeluconstruct(rt, start, voxel, 0);
 }
 
@@ -547,13 +530,13 @@ t_coord	*ft_atoicoord(t_rt *rt, char *str)
 	return (coord);
 }
 
-t_ori	*ft_atoiori(t_rt *rt, char *str)
+t_coord	*ft_atoiori(t_rt *rt, char *str)
 {
-	t_ori	*ori;
+	t_coord	*ori;
 	int		i;
 
 	i = 0;
-	ori = ft_malloc(sizeof(t_ori), rt->garbage);
+	ori = ft_malloc(sizeof(t_coord), rt->garbage);
 	if (!ori)
 		ft_exit(rt, "malloc error\n");
 	ori->x = ft_atoi(&str[i]);
@@ -692,6 +675,8 @@ void	ft_calcobj(t_rt *rt, t_obj *objet)
 		ft_calcpl(objet);
 	else if (objet->type == C)
 		ft_calcC(objet);
+	else if (objet->type == L)
+		ft_calcC(objet);
 	ft_calccoordobjrt(rt, objet);
 }
 
@@ -736,10 +721,82 @@ void	ft_moveobj(t_rt *rt, t_obj *obj, t_coord *dep)
 	}
 }
 
+float	ft_normcarre(t_coord *one)
+{
+	return (one->x * one->x + one->y * one->y + one->z * one->z);
+}
+
+float	ft_scalaire(t_coord *one, t_coord two)
+{
+	return (one->x * two.x + one->y * two.y + one->z * two.z);
+}
+
+void	ft_norm(t_coord *one)
+{
+	float	norm;
+
+	norm = sqrt(ft_normcarre(one));
+	one->x = one->x / norm;
+	one->y = one->y / norm;
+	one->z = one->z / norm;
+}
+
+int	ft_intersection(t_rt *rt ,t_ray *rayon, t_obj *obj)
+{
+	float	a;
+	float	b;
+	float	c;
+	float	delta;
+	float	sol1;
+	float	sol2;
+
+
+	a = 1;
+	b = 2 * ft_scalaire(rayon->ori, *rt->origin - *((t_sp *)obj->obj)->coord);
+	c = ft_normcarre(((t_sp *)obj->obj)->coord) - ((t_sp *)obj->obj)->rayon * ((t_sp *)obj->obj)->rayon;
+	delta = b * b - 4 * a * c;
+	if (delta < 0)
+		return (0);
+	sol1 = (-b -(sqrt(delta))) / (2 * a);
+	sol2 = (-b +(sqrt(delta))) / (2 * a);
+	if (sol2 > 0)
+		return (1);
+	return (0);
+}
+
+void	ft_firsttracing(t_rt *rt)
+{
+	int		i;
+	int		j;
+	t_ray 	rayon;
+	int		inter;
+
+	i = 0;
+	j = 0;
+	while (j < rt->ysize - 1)
+	{
+		while (i < rt->xsize - 1)
+		{
+			rayon.coord = ((t_cam *)rt->cam->obj)->coord;
+			rayon.ori = ft_makecoord(rt, i - rt->xsize / 2, j - rt->ysize / 2, -rt->xsize / (2 * tan(rt->fov / 2)));
+			ft_norm(rayon.ori);
+			inter = ft_intersection(rt, &rayon, rt->obj->start->next->content);
+			if (inter == 0)
+				ft_printpixelimg(rt, ft_makecoord(rt, i, j, 0), 55555);
+			else
+				ft_printpixelimg(rt, ft_makecoord(rt, i, j, 0), 333);
+			i++;
+		}
+		i = 0;
+		j++;
+	}
+}
+
 void	ft_printfirst(t_rt *rt)
 {
 	ft_constructtree(rt);
-	ft_printobjlist(rt, rt->obj);
+//	ft_printobjlist(rt, rt->obj);
+//	ft_firsttracing(rt);
 }
 
 int	ft_key_hook(int keycode, t_rt *rt)
@@ -769,6 +826,8 @@ void	*ft_makeobj(t_rt *rt, void *obj, int type)
 		ft_exit(rt, "malloc error\n");
 	objet->type = type;
 	objet->obj = obj;
+	if (type == L)
+		rt->light = objet;
 	if (type == C)
 		rt->cam = objet;
 	ft_calcobj(rt, objet);
@@ -887,8 +946,37 @@ void	*ft_makecam(t_rt *rt, char *str)
 	while (str[i] == ' ')
 		i++;
 	cam->coord = ft_atoicoord(rt, &str[i]);
-	cam->color = 999;
+	while (str[i] && str[i] != ' ')
+		i++;
+	while (str[i] == ' ')
+		i++;
+	cam->color = ft_atoi(&str[i]);
 	return (ft_makeobj(rt, cam, C));
+}
+
+void	*ft_makelight(t_rt *rt, char *str)
+{
+	t_light	*light;
+	int		i;
+
+	i = 0;
+	light = ft_malloc(sizeof(t_light), rt->garbage);
+	if (!light)
+		ft_exit(rt, "malloc error\n");
+	while (str[i] == ' ')
+		i++;
+	light->coord = ft_atoicoord(rt, &str[i]);
+	while (str[i] && str[i] != ' ')
+		i++;
+	while (str[i] == ' ')
+		i++;
+	light->intensiter = ft_atoi(&str[i]);
+	while (str[i] && str[i] != ' ')
+		i++;
+	while (str[i] == ' ')
+		i++;
+	light->color = ft_atoi(&str[i]);
+	return (ft_makeobj(rt, light, L));
 }
 
 void	ft_parse(t_rt *rt, char	**in)
@@ -908,6 +996,8 @@ void	ft_parse(t_rt *rt, char	**in)
 			ft_lstnew(ft_makepl(rt, &in[i][2]), rt->obj, rt->garbage);
 		if (in[i][0] == 'C')
 			ft_lstnew(ft_makecam(rt, &in[i][1]), rt->obj, rt->garbage);
+		if (in[i][0] == 'L')
+			ft_lstnew(ft_makelight(rt, &in[i][1]), rt->obj, rt->garbage);
 		i++;
 	}
 }
@@ -975,8 +1065,10 @@ t_rt	*ft_initrt(char **argv)
 	rt->objymax = -200000000;
 	rt->objzmin = 200000000;
 	rt->objzmax = -200000000;
+	rt->fov = 60 * M_PI / 180;
 	rt->xsize = 1400;
 	rt->ysize = 1400;
+	rt->origin = ft_makecoord(rt, 0, 0, 0);
 	rt->image.origin = 0;
 	ft_open(rt, argv[1]);
 	return (rt);

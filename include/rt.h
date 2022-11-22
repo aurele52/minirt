@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:22:31 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/21 20:33:30 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/22 16:14:46 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,6 @@ typedef struct s_list
 	struct s_pos	*pos;
 }	t_list;
 
-typedef struct s_ori
-{
-	float	x;
-	float	y;
-	float	z;
-}	t_ori;
-
 typedef struct s_cam
 {
 	int	color;
@@ -67,8 +60,15 @@ typedef struct s_pl
 {
 	int	color;
 	t_coord	*coord;
-	t_ori	*ori;
+	t_coord	*ori;
 }	t_pl;
+
+typedef struct s_ray
+{
+	int	color;
+	t_coord	*coord;
+	t_coord	*ori;
+}	t_ray;
 
 typedef struct s_seg
 {
@@ -84,12 +84,20 @@ typedef struct s_voxel
 	t_coord	*second;
 }	t_voxel;
 
+typedef struct s_light
+{
+	int	color;
+	t_coord	*coord;
+	float	intensiter;
+}	t_light;
+
 enum e_objtype
 {
 	VOXEL,
 	SP,
 	PL,
 	C,
+	L,
 	SEG
 };
 
@@ -136,8 +144,11 @@ typedef struct s_rt
 	float		objzmax;
 	float		objxmax;
 	float		objymax;
+	float		fov;
+	t_coord		*origin;
 	int			*color;
 	t_obj		*cam;
+	t_obj		*light;
 	t_pos		*obj;
 }	t_rt;
 
