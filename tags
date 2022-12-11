@@ -57,6 +57,7 @@ INC	minilibx-linux/test/Makefile.mk	/^INC=%%%%$/;"	m
 INCLIB	minilibx-linux/test/Makefile.mk	/^INCLIB=$(INC)\/..\/lib$/;"	m
 INCLUDE	minilibx-linux/man/man1/mlx.1	/^.SH INCLUDE FILE$/;"	s	title:MiniLibX
 INCLUDE	minilibx-linux/man/man3/mlx.3	/^.SH INCLUDE FILE$/;"	s	title:MiniLibX
+L	include/rt.h	/^	L,$/;"	e	enum:e_objtype
 LFLAGS	minilibx-linux/test/Makefile.mk	/^LFLAGS = -L.. -lmlx -L$(INCLIB) -lXext -lX11 -lm$/;"	m
 LIBRARY	minilibx-linux/man/man1/mlx.1	/^.SH LIBRARY FUNCTIONS$/;"	s	title:MiniLibX
 LIBRARY	minilibx-linux/man/man3/mlx.3	/^.SH LIBRARY FUNCTIONS$/;"	s	title:MiniLibX
@@ -170,7 +171,9 @@ cmap	minilibx-linux/mlx_int.h	/^	Colormap	cmap;$/;"	m	struct:s_xvar	typeref:type
 col	minilibx-linux/mlx_int.h	/^	int		col;$/;"	m	struct:s_xpm_col	typeref:typename:int
 color	include/rt.h	/^	int			*color;$/;"	m	struct:s_rt	typeref:typename:int *
 color	include/rt.h	/^	int	color;$/;"	m	struct:s_cam	typeref:typename:int
+color	include/rt.h	/^	int	color;$/;"	m	struct:s_light	typeref:typename:int
 color	include/rt.h	/^	int	color;$/;"	m	struct:s_pl	typeref:typename:int
+color	include/rt.h	/^	int	color;$/;"	m	struct:s_ray	typeref:typename:int
 color	include/rt.h	/^	int	color;$/;"	m	struct:s_seg	typeref:typename:int
 color	include/rt.h	/^	int	color;$/;"	m	struct:s_sp	typeref:typename:int
 color	include/rt.h	/^	int	color;$/;"	m	struct:s_voxel	typeref:typename:int
@@ -179,7 +182,9 @@ color_map_1	minilibx-linux/test/main.c	/^int	color_map_1(void *win,int w,int h)$
 color_map_2	minilibx-linux/test/main.c	/^int	color_map_2(unsigned char *data,int bpp,int sl,int w,int h,int endian, int type)$/;"	f	typeref:typename:int
 content	include/rt.h	/^	void			*content;$/;"	m	struct:s_list	typeref:typename:void *
 coord	include/rt.h	/^	t_coord	*coord;$/;"	m	struct:s_cam	typeref:typename:t_coord *
+coord	include/rt.h	/^	t_coord	*coord;$/;"	m	struct:s_light	typeref:typename:t_coord *
 coord	include/rt.h	/^	t_coord	*coord;$/;"	m	struct:s_pl	typeref:typename:t_coord *
+coord	include/rt.h	/^	t_coord	*coord;$/;"	m	struct:s_ray	typeref:typename:t_coord *
 coord	include/rt.h	/^	t_coord	*coord;$/;"	m	struct:s_sp	typeref:typename:t_coord *
 data	minilibx-linux/mlx_int.h	/^	char			*data;$/;"	m	struct:s_img	typeref:typename:char *
 data1	minilibx-linux/test/main.c	/^char	*data1;$/;"	v	typeref:typename:char *
@@ -207,12 +212,13 @@ fclean	Makefile	/^fclean:	clean$/;"	t
 first	include/rt.h	/^	t_coord	*first;$/;"	m	struct:s_seg	typeref:typename:t_coord *
 first	include/rt.h	/^	t_coord	*first;$/;"	m	struct:s_voxel	typeref:typename:t_coord *
 format	minilibx-linux/mlx_int.h	/^	int				format;$/;"	m	struct:s_img	typeref:typename:int
+fov	include/rt.h	/^	float		fov;$/;"	m	struct:s_rt	typeref:typename:float
 ft_C	src/ft_cast.c	/^t_cam	*ft_C(t_list *liste)$/;"	f	typeref:typename:t_cam *
 ft_abs	src/libft/ft_abs.c	/^int	ft_abs(int a)$/;"	f	typeref:typename:int
 ft_atoi	src/libft/ft_atoi.c	/^int	ft_atoi(const char *str)$/;"	f	typeref:typename:int
 ft_atoicoord	src/main.c	/^t_coord	*ft_atoicoord(t_rt *rt, char *str)$/;"	f	typeref:typename:t_coord *
 ft_atoignl	src/libft/get_next_line_utils.c	/^int	ft_atoignl(const char *str)$/;"	f	typeref:typename:int
-ft_atoiori	src/main.c	/^t_ori	*ft_atoiori(t_rt *rt, char *str)$/;"	f	typeref:typename:t_ori *
+ft_atoiori	src/main.c	/^t_coord	*ft_atoiori(t_rt *rt, char *str)$/;"	f	typeref:typename:t_coord *
 ft_bresenham	src/ft_printdroite2.c	/^void	ft_bresenham(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
 ft_bresenhamfourfive	src/ft_printdroite2.c	/^void	ft_bresenhamfourfive(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
 ft_bresenhamoneeight	src/ft_printdroite3.c	/^void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
@@ -233,9 +239,11 @@ ft_constructtree	src/main.c	/^void	ft_constructtree(t_rt *rt)$/;"	f	typeref:type
 ft_crea	src/libft/ft_itoa.c	/^static char	*ft_crea(int n, int i, int moin, t_pos *garbage)$/;"	f	typeref:typename:char *	file:
 ft_exit	src/libft/ft_exit.c	/^void	ft_exit(t_rt *rt, char *str)$/;"	f	typeref:typename:void
 ft_findsplitvoxel	src/main.c	/^t_pl	*ft_findsplitvoxel(t_rt *rt, t_pos *obj, t_voxel *voxel, int depth)$/;"	f	typeref:typename:t_pl *
+ft_firsttracing	src/main.c	/^void	ft_firsttracing(t_rt *rt)$/;"	f	typeref:typename:void
 ft_gnl2	src/libft/get_next_line.c	/^char	*ft_gnl2(char *str, char *buffer, int fd, t_pos *free)$/;"	f	typeref:typename:char *
 ft_initrt	src/main.c	/^t_rt	*ft_initrt(char **argv)$/;"	f	typeref:typename:t_rt *
 ft_inittruert	src/main.c	/^void	ft_inittruert(t_rt *rt)$/;"	f	typeref:typename:void
+ft_intersection	src/main.c	/^int	ft_intersection(t_rt *rt ,t_ray *rayon, t_sp *sp, t_coord *normal, t_coord *coordinter)$/;"	f	typeref:typename:int
 ft_isonecoordex	src/main.c	/^int		ft_isonecoordex(t_rt *rt, void *obj)$/;"	f	typeref:typename:int
 ft_itoa	src/libft/ft_itoa.c	/^char	*ft_itoa(int n, t_pos *garbage)$/;"	f	typeref:typename:char *
 ft_itoagnl	src/libft/get_next_line.c	/^char	*ft_itoagnl(int n, char *str, char *str2)$/;"	f	typeref:typename:char *
@@ -246,6 +254,7 @@ ft_lstnew	src/libft/ft_lstnew.c	/^t_list	*ft_lstnew(void *content, t_pos *pos, t
 ft_makecam	src/main.c	/^void	*ft_makecam(t_rt *rt, char *str)$/;"	f	typeref:typename:void *
 ft_makecoord	src/ft_printdroite3.c	/^t_coord	*ft_makecoord(t_rt *rt, float x, float y, float z)$/;"	f	typeref:typename:t_coord *
 ft_makefirstvoxel	src/main.c	/^t_voxel *ft_makefirstvoxel(t_rt *rt)$/;"	f	typeref:typename:t_voxel *
+ft_makelight	src/main.c	/^void	*ft_makelight(t_rt *rt, char *str)$/;"	f	typeref:typename:void *
 ft_makenewvoxel	src/main.c	/^t_voxel	*ft_makenewvoxel(t_rt *rt, t_coord *coord1, t_coord *coord2, int *color)$/;"	f	typeref:typename:t_voxel *
 ft_makeobj	src/main.c	/^void	*ft_makeobj(t_rt *rt, void *obj, int type)$/;"	f	typeref:typename:void *
 ft_makepl	src/main.c	/^void	*ft_makepl(t_rt *rt, char *str)$/;"	f	typeref:typename:void *
@@ -254,17 +263,23 @@ ft_makesp	src/main.c	/^void	*ft_makesp(t_rt *rt, char *str)$/;"	f	typeref:typena
 ft_makevoxel	src/main.c	/^void	*ft_makevoxel(t_rt *rt, char *str)$/;"	f	typeref:typename:void *
 ft_malloc	src/libft/ft_malloc.c	/^void	*ft_malloc(int size, t_pos *garbage)$/;"	f	typeref:typename:void *
 ft_max	src/libft/ft_max.c	/^int	ft_max(int nb1, int nb2)$/;"	f	typeref:typename:int
+ft_maxchar	src/main.c	/^float	ft_maxchar(float one)$/;"	f	typeref:typename:float
 ft_min	src/libft/ft_min.c	/^int	ft_min(int nb1, int nb2)$/;"	f	typeref:typename:int
+ft_minchar	src/main.c	/^float	ft_minchar(float one)$/;"	f	typeref:typename:float
 ft_moveobj	src/main.c	/^void	ft_moveobj(t_rt *rt, t_obj *obj, t_coord *dep)$/;"	f	typeref:typename:void
 ft_moveonecoord	src/main.c	/^void	ft_moveonecoord(void *obj, t_coord *coord)$/;"	f	typeref:typename:void
 ft_newleaf	src/main.c	/^t_bt	*ft_newleaf(t_rt *rt, t_pos *obj)$/;"	f	typeref:typename:t_bt *
 ft_newnoeu	src/main.c	/^t_bt	*ft_newnoeu(t_rt *rt, t_pos *obj, t_bt *right, t_bt *left)$/;"	f	typeref:typename:t_bt *
+ft_norm	src/main.c	/^void	ft_norm(t_coord *one)$/;"	f	typeref:typename:void
+ft_normcarre	src/main.c	/^float	ft_normcarre(t_coord *one)$/;"	f	typeref:typename:float
+ft_normcarree	src/main.c	/^float	ft_normcarree(t_coord one)$/;"	f	typeref:typename:float
 ft_objdroite	src/main.c	/^t_pos	*ft_objdroite(t_rt *rt, t_pl *pl, t_pos *obj, int depth)$/;"	f	typeref:typename:t_pos *
 ft_objgauche	src/main.c	/^t_pos	*ft_objgauche(t_rt *rt, t_pl *pl, t_pos *obj, int depth)$/;"	f	typeref:typename:t_pos *
 ft_open	src/main.c	/^void	ft_open(t_rt *rt, char *str)$/;"	f	typeref:typename:void
 ft_parse	src/main.c	/^void	ft_parse(t_rt *rt, char	**in)$/;"	f	typeref:typename:void
 ft_pl	src/ft_cast.c	/^t_pl	*ft_pl(t_list *liste)$/;"	f	typeref:typename:t_pl *
 ft_posclear	src/libft/ft_posclear.c	/^void	ft_posclear(t_pos *pos, int freee)$/;"	f	typeref:typename:void
+ft_preintersection	src/main.c	/^int	ft_preintersection(t_rt *rt, t_ray *rayon)$/;"	f	typeref:typename:int
 ft_printcam	src/main.c	/^void	ft_printcam(t_rt *rt, t_cam *cam)$/;"	f	typeref:typename:void
 ft_printdiag	src/ft_printdroite.c	/^void	ft_printdiag(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
 ft_printdiagonefour	src/ft_printdroite.c	/^void	ft_printdiagonefour(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
@@ -289,6 +304,7 @@ ft_remp	src/libft/ft_itoa.c	/^static char	*ft_remp(char *str, int n, int i)$/;"	
 ft_retintmin	src/libft/ft_itoa.c	/^static char	*ft_retintmin(int i, t_pos *garbage)$/;"	f	typeref:typename:char *	file:
 ft_return	src/libft/get_next_line.c	/^char	*ft_return(char *str, char *buffer)$/;"	f	typeref:typename:char *
 ft_rtcolor	src/main.c	/^void	ft_rtcolor(t_rt *rt)$/;"	f	typeref:typename:void
+ft_scalaire	src/main.c	/^float	ft_scalaire(t_coord *one, t_coord two)$/;"	f	typeref:typename:float
 ft_seg	src/ft_cast.c	/^t_seg	*ft_seg(t_list *liste)$/;"	f	typeref:typename:t_seg *
 ft_setpos	src/libft/ft_setpos.c	/^t_pos	*ft_setpos(t_pos *garbage)$/;"	f	typeref:typename:t_pos *
 ft_sp	src/ft_cast.c	/^t_sp	*ft_sp(t_list *liste)$/;"	f	typeref:typename:t_sp *
@@ -328,12 +344,14 @@ im4	minilibx-linux/test/main.c	/^void	*im4;$/;"	v	typeref:typename:void *
 image	include/rt.h	/^	t_imginfo	image;$/;"	m	struct:s_rt	typeref:typename:t_imginfo
 image	minilibx-linux/mlx_int.h	/^	XImage			*image;$/;"	m	struct:s_img	typeref:typename:XImage *
 imgaddress	include/rt.h	/^	char	*imgaddress;$/;"	m	struct:s_imginfo	typeref:typename:char *
+intensiter	include/rt.h	/^	float	intensiter;$/;"	m	struct:s_light	typeref:typename:float
 key_hook	minilibx-linux/mlx_int.h	/^	int					(*key_hook)();$/;"	m	struct:s_win_list	typeref:typename:int (*)()
 key_param	minilibx-linux/mlx_int.h	/^	void				*key_param;$/;"	m	struct:s_win_list	typeref:typename:void *
 key_win1	minilibx-linux/test/main.c	/^int	key_win1(int key,void *p)$/;"	f	typeref:typename:int
 key_win2	minilibx-linux/test/main.c	/^int	key_win2(int key,void *p)$/;"	f	typeref:typename:int
 key_win3	minilibx-linux/test/main.c	/^int	key_win3(int key,void *p)$/;"	f	typeref:typename:int
 left	include/rt.h	/^	struct s_bt *left;$/;"	m	struct:s_bt	typeref:struct:s_bt *
+light	include/rt.h	/^	t_obj		*light;$/;"	m	struct:s_rt	typeref:typename:t_obj *
 local_endian	minilibx-linux/test/main.c	/^int	local_endian;$/;"	v	typeref:typename:int
 log_error	minilibx-linux/configure	/^log_error(){$/;"	f
 log_error	minilibx-linux/test/run_tests.sh	/^log_error(){$/;"	f
@@ -438,7 +456,9 @@ objymax	include/rt.h	/^	float		objymax;$/;"	m	struct:s_rt	typeref:typename:float
 objymin	include/rt.h	/^	float		objymin;$/;"	m	struct:s_rt	typeref:typename:float
 objzmax	include/rt.h	/^	float		objzmax;$/;"	m	struct:s_rt	typeref:typename:float
 objzmin	include/rt.h	/^	float		objzmin;$/;"	m	struct:s_rt	typeref:typename:float
-ori	include/rt.h	/^	t_ori	*ori;$/;"	m	struct:s_pl	typeref:typename:t_ori *
+ori	include/rt.h	/^	t_coord	*ori;$/;"	m	struct:s_pl	typeref:typename:t_coord *
+ori	include/rt.h	/^	t_coord	*ori;$/;"	m	struct:s_ray	typeref:typename:t_coord *
+origin	include/rt.h	/^	t_coord		*origin;$/;"	m	struct:s_rt	typeref:typename:t_coord *
 origin	include/rt.h	/^	void	*origin;$/;"	m	struct:s_imginfo	typeref:typename:void *
 ouijesais	src/libft/ft_putnbrfd.c	/^static void	ouijesais(char c, int fd)$/;"	f	typeref:typename:void	file:
 param	minilibx-linux/mlx_int.h	/^	void	*param;$/;"	m	struct:s_event_list	typeref:typename:void *
@@ -460,11 +480,12 @@ s_col_name	minilibx-linux/mlx_int.h	/^struct	s_col_name$/;"	s
 s_event_list	minilibx-linux/mlx_int.h	/^typedef struct	s_event_list$/;"	s
 s_img	minilibx-linux/mlx_int.h	/^typedef struct	s_img$/;"	s
 s_imginfo	include/rt.h	/^typedef struct s_imginfo$/;"	s
+s_light	include/rt.h	/^typedef struct s_light$/;"	s
 s_list	include/rt.h	/^typedef struct s_list$/;"	s
 s_obj	include/rt.h	/^typedef struct s_obj$/;"	s
-s_ori	include/rt.h	/^typedef struct s_ori$/;"	s
 s_pl	include/rt.h	/^typedef struct s_pl$/;"	s
 s_pos	include/rt.h	/^typedef struct s_pos$/;"	s
+s_ray	include/rt.h	/^typedef struct s_ray$/;"	s
 s_rt	include/rt.h	/^typedef struct s_rt$/;"	s
 s_seg	include/rt.h	/^typedef struct s_seg$/;"	s
 s_sp	include/rt.h	/^typedef struct s_sp$/;"	s
@@ -497,11 +518,12 @@ t_coord	include/rt.h	/^typedef float t_coord __attribute__((ext_vector_type(3)))
 t_event_list	minilibx-linux/mlx_int.h	/^}				t_event_list;$/;"	t	typeref:struct:s_event_list
 t_img	minilibx-linux/mlx_int.h	/^}				t_img;$/;"	t	typeref:struct:s_img
 t_imginfo	include/rt.h	/^}	t_imginfo;$/;"	t	typeref:struct:s_imginfo
+t_light	include/rt.h	/^}	t_light;$/;"	t	typeref:struct:s_light
 t_list	include/rt.h	/^}	t_list;$/;"	t	typeref:struct:s_list
 t_obj	include/rt.h	/^}	t_obj;$/;"	t	typeref:struct:s_obj
-t_ori	include/rt.h	/^}	t_ori;$/;"	t	typeref:struct:s_ori
 t_pl	include/rt.h	/^}	t_pl;$/;"	t	typeref:struct:s_pl
 t_pos	include/rt.h	/^}	t_pos;$/;"	t	typeref:struct:s_pos
+t_ray	include/rt.h	/^}	t_ray;$/;"	t	typeref:struct:s_ray
 t_rt	include/rt.h	/^}	t_rt;$/;"	t	typeref:struct:s_rt
 t_seg	include/rt.h	/^}	t_seg;$/;"	t	typeref:struct:s_seg
 t_sp	include/rt.h	/^}	t_sp;$/;"	t	typeref:struct:s_sp
@@ -526,16 +548,13 @@ win_ptr	include/rt.h	/^	void		*win_ptr;$/;"	m	struct:s_rt	typeref:typename:void 
 window	minilibx-linux/mlx_int.h	/^	Window				window;$/;"	m	struct:s_win_list	typeref:typename:Window
 wm_delete_window	minilibx-linux/mlx_int.h	/^	Atom		wm_delete_window;$/;"	m	struct:s_xvar	typeref:typename:Atom
 wm_protocols	minilibx-linux/mlx_int.h	/^	Atom		wm_protocols;$/;"	m	struct:s_xvar	typeref:typename:Atom
-x	include/rt.h	/^	float	x;$/;"	m	struct:s_ori	typeref:typename:float
 xmax	include/rt.h	/^	float		xmax;$/;"	m	struct:s_obj	typeref:typename:float
 xmin	include/rt.h	/^	float		xmin;$/;"	m	struct:s_obj	typeref:typename:float
 xpm1_x	minilibx-linux/test/main.c	/^int	xpm1_x;$/;"	v	typeref:typename:int
 xpm1_y	minilibx-linux/test/main.c	/^int	xpm1_y;$/;"	v	typeref:typename:int
 xsize	include/rt.h	/^	int			xsize;$/;"	m	struct:s_rt	typeref:typename:int
-y	include/rt.h	/^	float	y;$/;"	m	struct:s_ori	typeref:typename:float
 ymax	include/rt.h	/^	float		ymax;$/;"	m	struct:s_obj	typeref:typename:float
 ymin	include/rt.h	/^	float		ymin;$/;"	m	struct:s_obj	typeref:typename:float
 ysize	include/rt.h	/^	int			ysize;$/;"	m	struct:s_rt	typeref:typename:int
-z	include/rt.h	/^	float	z;$/;"	m	struct:s_ori	typeref:typename:float
 zmax	include/rt.h	/^	float		zmax;$/;"	m	struct:s_obj	typeref:typename:float
 zmin	include/rt.h	/^	float		zmin;$/;"	m	struct:s_obj	typeref:typename:float

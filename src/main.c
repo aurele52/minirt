@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 21:07:03 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/22 16:34:12 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/12/11 17:35:14 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -367,7 +367,7 @@ t_pos	*ft_lstdup(t_pos *pos, t_pos *garbage)
 
 int	ft_calcfin(t_pos *obj, t_voxel *voxel, int depth)
 {
-	if (*obj->size <= 1)
+	if (*obj->size <= 1 && depth >= 5)
 		return (1);
 	return (0);
 	(void)voxel;
@@ -726,6 +726,11 @@ float	ft_normcarre(t_coord *one)
 	return (one->x * one->x + one->y * one->y + one->z * one->z);
 }
 
+float	ft_normcarree(t_coord one)
+{
+	return (one.x * one.x + one.y * one.y + one.z * one.z);
+}
+
 float	ft_scalaire(t_coord *one, t_coord two)
 {
 	return (one->x * two.x + one->y * two.y + one->z * two.z);
@@ -736,12 +741,24 @@ void	ft_norm(t_coord *one)
 	float	norm;
 
 	norm = sqrt(ft_normcarre(one));
-	one->x = one->x / norm;
-	one->y = one->y / norm;
-	one->z = one->z / norm;
+	*one = *one / norm;
 }
 
-int	ft_intersection(t_rt *rt ,t_ray *rayon, t_obj *obj)
+float	ft_maxchar(float one)
+{
+	if (one > 255)
+		return (255);
+	return (one);
+}
+
+float	ft_minchar(float one)
+{
+	if (one < 20)
+		return (20);
+	return (one);
+}
+
+int	ft_intersection(t_rt *rt ,t_ray *rayon, t_sp *sp, t_coord *normal, t_coord *coordinter)
 {
 	float	a;
 	float	b;
@@ -752,17 +769,65 @@ int	ft_intersection(t_rt *rt ,t_ray *rayon, t_obj *obj)
 
 
 	a = 1;
-	b = 2 * ft_scalaire(rayon->ori, *rt->origin - *((t_sp *)obj->obj)->coord);
-	c = ft_normcarre(((t_sp *)obj->obj)->coord) - ((t_sp *)obj->obj)->rayon * ((t_sp *)obj->obj)->rayon;
+	b = 2 * ft_scalaire(rayon->ori, *rt->origin - *sp->coord);
+	c = ft_normcarre(sp->coord) - sp->rayon * sp->rayon;
 	delta = b * b - 4 * a * c;
 	if (delta < 0)
 		return (0);
 	sol1 = (-b -(sqrt(delta))) / (2 * a);
 	sol2 = (-b +(sqrt(delta))) / (2 * a);
-	if (sol2 > 0)
-		return (1);
+	if (sol2 < 0)
+		return (0);
+	float	sol;
+	if (sol1 > 0)
+		sol = sol1;
+	else
+		sol = sol2;
+	
+	*coordinter = *rayon->coord + (sol * *rayon->ori);
+	*normal = *coordinter - *sp->coord;
+	ft_norm(normal);
+	return (sp->color);
+}
+
+int	ft_preintersection(t_rt *rt, t_ray *rayon)
+{
+	t_coord	normal;
+	t_coord	coordinter;
+	float	pixelint;
+	int		inter;
+
+	inter = ft_intersection(rt, rayon, ((t_obj *)rt->obj->start->next->content)->obj, &normal, &coordinter);
+	if (inter)
+	{
+		ft_norm(((t_light *)rt->light->obj)->coord);
+		pixelint = ((t_light *)rt->light->obj)->intensiter * (ft_maxchar(ft_scalaire(((t_light *)rt->light->obj)->coord, normal)) / (ft_normcarree(*((t_light *)rt->light->obj)->coord - coordinter)));
+		pixelint = ft_maxchar(pixelint);
+		pixelint = ft_minchar(pixelint);
+		int lol;
+		lol = pixelint;
+		inter = (lol << 16 | lol << 8 | lol);
+		return (inter);
+	}
 	return (0);
 }
+
+int ft_lcolor()
+{
+//	unsigned mask1 = 255 << 16 | 255 << 8 | 255;
+	unsigned mask2 = 255 << 24 | 255 << 8 | 255;
+//	unsigned mask3 = 255 << 24 | 255 << 16 | 255;
+//	unsigned mask4 = 255 << 24 | 255 << 16 | 255 << 8;
+
+	int	c;
+	unsigned color;
+
+	color = mask2 | 0 << 16;
+	c = 0 << 24 | 255 << 16 | 0 << 8 | 0;
+	c = color & c;
+	return (c);
+}
+
 
 void	ft_firsttracing(t_rt *rt)
 {
@@ -780,11 +845,8 @@ void	ft_firsttracing(t_rt *rt)
 			rayon.coord = ((t_cam *)rt->cam->obj)->coord;
 			rayon.ori = ft_makecoord(rt, i - rt->xsize / 2, j - rt->ysize / 2, -rt->xsize / (2 * tan(rt->fov / 2)));
 			ft_norm(rayon.ori);
-			inter = ft_intersection(rt, &rayon, rt->obj->start->next->content);
-			if (inter == 0)
-				ft_printpixelimg(rt, ft_makecoord(rt, i, j, 0), 55555);
-			else
-				ft_printpixelimg(rt, ft_makecoord(rt, i, j, 0), 333);
+			inter = ft_preintersection(rt, &rayon);
+			ft_printpixelimg(rt, ft_makecoord(rt, i, rt->ysize - j, 0), inter);
 			i++;
 		}
 		i = 0;
@@ -794,9 +856,9 @@ void	ft_firsttracing(t_rt *rt)
 
 void	ft_printfirst(t_rt *rt)
 {
-	ft_constructtree(rt);
+//	ft_constructtree(rt);
 //	ft_printobjlist(rt, rt->obj);
-//	ft_firsttracing(rt);
+	ft_firsttracing(rt);
 }
 
 int	ft_key_hook(int keycode, t_rt *rt)
