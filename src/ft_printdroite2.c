@@ -6,13 +6,13 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 21:00:57 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/21 20:27:38 by audreyer         ###   ########.fr       */
+/*   Updated: 2023/01/09 21:51:28 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void	ft_bresenhamthreesix(t_rt *rt, t_coord one, t_coord two, int color)
+void	ft_bresenhamthreesix(t_rt *rt, t_coord one, t_coord two, t_color color)
 {
 	int	e;
 	int	dy;
@@ -38,7 +38,7 @@ void	ft_bresenhamthreesix(t_rt *rt, t_coord one, t_coord two, int color)
 	}
 }
 
-void	ft_bresenhamfourfive(t_rt *rt, t_coord one, t_coord two, int color)
+void	ft_bresenhamfourfive(t_rt *rt, t_coord one, t_coord two, t_color color)
 {
 	int	e;
 	int	dy;
@@ -64,7 +64,7 @@ void	ft_bresenhamfourfive(t_rt *rt, t_coord one, t_coord two, int color)
 	}
 }
 
-void	ft_bresenhamtwoseven(t_rt *rt, t_coord one, t_coord two, int color)
+void	ft_bresenhamtwoseven(t_rt *rt, t_coord one, t_coord two, t_color color)
 {
 	int	e;
 	int	dy;
@@ -90,7 +90,7 @@ void	ft_bresenhamtwoseven(t_rt *rt, t_coord one, t_coord two, int color)
 	}
 }
 
-void	ft_bresenham(t_rt *rt, t_coord one, t_coord two, int color)
+void	ft_bresenham(t_rt *rt, t_coord one, t_coord two, t_color color)
 {
 	int	dx;
 	int	dy;
@@ -119,7 +119,7 @@ void	ft_bresenham(t_rt *rt, t_coord one, t_coord two, int color)
 	ft_printpixelimg(rt, ft_makecoord(rt, two.x, two.y, 0), color);
 }
 
-void	ft_printdroite(t_rt *rt, t_coord one, t_coord two, int color)
+void	ft_printdroite(t_rt *rt, t_coord one, t_coord two, t_color color)
 {
 	if (one.x == two .x)
 		ft_printsamex(rt, one, two, color);

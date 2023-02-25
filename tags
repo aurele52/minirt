@@ -148,6 +148,7 @@ XPM	minilibx-linux/man/man1/mlx_new_image.1	/^.SH XPM IMAGES$/;"	s	title:MiniLib
 XPM	minilibx-linux/man/man3/mlx_new_image.3	/^.SH XPM IMAGES$/;"	s	title:MiniLibX
 X_ShmAttach	minilibx-linux/mlx_new_image.c	/^#define	X_ShmAttach	/;"	d	file:
 ZLIMITE	include/rt.h	/^# define ZLIMITE /;"	d
+affichebin	test.c	/^void affichebin(unsigned n)$/;"	f	typeref:typename:void
 all	Makefile	/^all:	$(NAME)$/;"	t
 all	minilibx-linux/Makefile	/^all	: do_configure$/;"	t
 all	minilibx-linux/Makefile.mk	/^all	: $(NAME)$/;"	t
@@ -155,12 +156,14 @@ all	minilibx-linux/test/Makefile.mk	/^all: $(NAME)$/;"	t
 at_exit	minilibx-linux/test/run_tests.sh	/^at_exit() {$/;"	f
 back	include/rt.h	/^	struct s_list	*back;$/;"	m	struct:s_list	typeref:struct:s_list *
 bits_per_pixel	include/rt.h	/^	int		bits_per_pixel;$/;"	m	struct:s_imginfo	typeref:typename:int
+blue	include/rt.h	/^	int	blue;$/;"	m	struct:s_color	typeref:typename:int
+bottom_left	include/rt.h	/^	t_coord	bottom_left;$/;"	m	struct:s_cam	typeref:typename:t_coord
 bpp	minilibx-linux/mlx_int.h	/^	int				bpp;$/;"	m	struct:s_img	typeref:typename:int
 bpp1	minilibx-linux/test/main.c	/^int	bpp1;$/;"	v	typeref:typename:int
 bpp2	minilibx-linux/test/main.c	/^int	bpp2;$/;"	v	typeref:typename:int
 bpp3	minilibx-linux/test/main.c	/^int	bpp3;$/;"	v	typeref:typename:int
 bpp4	minilibx-linux/test/main.c	/^int	bpp4;$/;"	v	typeref:typename:int
-cam	include/rt.h	/^	t_obj		*cam;$/;"	m	struct:s_rt	typeref:typename:t_obj *
+cam	include/rt.h	/^	t_cam		cam;$/;"	m	struct:s_rt	typeref:typename:t_cam
 check	minilibx-linux/Makefile.mk	/^check: all$/;"	t
 clean	Makefile	/^clean:$/;"	t
 clean	minilibx-linux/Makefile	/^clean	:$/;"	t
@@ -169,23 +172,24 @@ clean	minilibx-linux/configure	/^clean(){$/;"	f
 clean	minilibx-linux/test/Makefile.mk	/^clean:$/;"	t
 cmap	minilibx-linux/mlx_int.h	/^	Colormap	cmap;$/;"	m	struct:s_xvar	typeref:typename:Colormap
 col	minilibx-linux/mlx_int.h	/^	int		col;$/;"	m	struct:s_xpm_col	typeref:typename:int
-color	include/rt.h	/^	int			*color;$/;"	m	struct:s_rt	typeref:typename:int *
-color	include/rt.h	/^	int	color;$/;"	m	struct:s_cam	typeref:typename:int
-color	include/rt.h	/^	int	color;$/;"	m	struct:s_light	typeref:typename:int
-color	include/rt.h	/^	int	color;$/;"	m	struct:s_pl	typeref:typename:int
-color	include/rt.h	/^	int	color;$/;"	m	struct:s_ray	typeref:typename:int
-color	include/rt.h	/^	int	color;$/;"	m	struct:s_seg	typeref:typename:int
-color	include/rt.h	/^	int	color;$/;"	m	struct:s_sp	typeref:typename:int
-color	include/rt.h	/^	int	color;$/;"	m	struct:s_voxel	typeref:typename:int
+color	include/rt.h	/^	t_color		color;$/;"	m	struct:s_rt	typeref:typename:t_color
+color	include/rt.h	/^	t_color	color;$/;"	m	struct:s_cam	typeref:typename:t_color
+color	include/rt.h	/^	t_color	color;$/;"	m	struct:s_light	typeref:typename:t_color
+color	include/rt.h	/^	t_color	color;$/;"	m	struct:s_pl	typeref:typename:t_color
+color	include/rt.h	/^	t_color	color;$/;"	m	struct:s_ray	typeref:typename:t_color
+color	include/rt.h	/^	t_color	color;$/;"	m	struct:s_seg	typeref:typename:t_color
+color	include/rt.h	/^	t_color	color;$/;"	m	struct:s_sp	typeref:typename:t_color
+color	include/rt.h	/^	t_color	color;$/;"	m	struct:s_voxel	typeref:typename:t_color
 color	minilibx-linux/mlx_int.h	/^	int		color;$/;"	m	struct:s_col_name	typeref:typename:int
 color_map_1	minilibx-linux/test/main.c	/^int	color_map_1(void *win,int w,int h)$/;"	f	typeref:typename:int
 color_map_2	minilibx-linux/test/main.c	/^int	color_map_2(unsigned char *data,int bpp,int sl,int w,int h,int endian, int type)$/;"	f	typeref:typename:int
 content	include/rt.h	/^	void			*content;$/;"	m	struct:s_list	typeref:typename:void *
-coord	include/rt.h	/^	t_coord	*coord;$/;"	m	struct:s_cam	typeref:typename:t_coord *
-coord	include/rt.h	/^	t_coord	*coord;$/;"	m	struct:s_light	typeref:typename:t_coord *
-coord	include/rt.h	/^	t_coord	*coord;$/;"	m	struct:s_pl	typeref:typename:t_coord *
-coord	include/rt.h	/^	t_coord	*coord;$/;"	m	struct:s_ray	typeref:typename:t_coord *
-coord	include/rt.h	/^	t_coord	*coord;$/;"	m	struct:s_sp	typeref:typename:t_coord *
+coord	include/rt.h	/^	t_coord	coord;$/;"	m	struct:s_cam	typeref:typename:t_coord
+coord	include/rt.h	/^	t_coord	coord;$/;"	m	struct:s_light	typeref:typename:t_coord
+coord	include/rt.h	/^	t_coord	coord;$/;"	m	struct:s_pl	typeref:typename:t_coord
+coord	include/rt.h	/^	t_coord	coord;$/;"	m	struct:s_ray	typeref:typename:t_coord
+coord	include/rt.h	/^	t_coord	coord;$/;"	m	struct:s_sp	typeref:typename:t_coord
+coordinter	src/main.c	/^	t_coord	coordinter;$/;"	m	struct:s_temp	typeref:typename:t_coord	file:
 data	minilibx-linux/mlx_int.h	/^	char			*data;$/;"	m	struct:s_img	typeref:typename:char *
 data1	minilibx-linux/test/main.c	/^char	*data1;$/;"	v	typeref:typename:char *
 data2	minilibx-linux/test/main.c	/^char	*data2;$/;"	v	typeref:typename:char *
@@ -209,108 +213,89 @@ expose_param	minilibx-linux/mlx_int.h	/^	void				*expose_param;$/;"	m	struct:s_w
 expose_win1	minilibx-linux/test/main.c	/^int	expose_win1(void *p)$/;"	f	typeref:typename:int
 expose_win2	minilibx-linux/test/main.c	/^int	expose_win2(void *p)$/;"	f	typeref:typename:int
 fclean	Makefile	/^fclean:	clean$/;"	t
-first	include/rt.h	/^	t_coord	*first;$/;"	m	struct:s_seg	typeref:typename:t_coord *
-first	include/rt.h	/^	t_coord	*first;$/;"	m	struct:s_voxel	typeref:typename:t_coord *
+first	include/rt.h	/^	t_coord	first;$/;"	m	struct:s_seg	typeref:typename:t_coord
+first	include/rt.h	/^	t_coord	first;$/;"	m	struct:s_voxel	typeref:typename:t_coord
 format	minilibx-linux/mlx_int.h	/^	int				format;$/;"	m	struct:s_img	typeref:typename:int
 fov	include/rt.h	/^	float		fov;$/;"	m	struct:s_rt	typeref:typename:float
+fov	include/rt.h	/^	int		fov;$/;"	m	struct:s_cam	typeref:typename:int
 ft_C	src/ft_cast.c	/^t_cam	*ft_C(t_list *liste)$/;"	f	typeref:typename:t_cam *
 ft_abs	src/libft/ft_abs.c	/^int	ft_abs(int a)$/;"	f	typeref:typename:int
 ft_atoi	src/libft/ft_atoi.c	/^int	ft_atoi(const char *str)$/;"	f	typeref:typename:int
-ft_atoicoord	src/main.c	/^t_coord	*ft_atoicoord(t_rt *rt, char *str)$/;"	f	typeref:typename:t_coord *
+ft_atoicoord	src/main.c	/^t_coord	ft_atoicoord(t_rt *rt, char *str)$/;"	f	typeref:typename:t_coord
 ft_atoignl	src/libft/get_next_line_utils.c	/^int	ft_atoignl(const char *str)$/;"	f	typeref:typename:int
-ft_atoiori	src/main.c	/^t_coord	*ft_atoiori(t_rt *rt, char *str)$/;"	f	typeref:typename:t_coord *
-ft_bresenham	src/ft_printdroite2.c	/^void	ft_bresenham(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
-ft_bresenhamfourfive	src/ft_printdroite2.c	/^void	ft_bresenhamfourfive(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
-ft_bresenhamoneeight	src/ft_printdroite3.c	/^void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
-ft_bresenhamthreesix	src/ft_printdroite2.c	/^void	ft_bresenhamthreesix(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
-ft_bresenhamtwoseven	src/ft_printdroite2.c	/^void	ft_bresenhamtwoseven(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
-ft_calcC	src/main.c	/^void	ft_calcC(t_obj *objet)$/;"	f	typeref:typename:void
-ft_calccoordobjrt	src/main.c	/^void	ft_calccoordobjrt(t_rt *rt, t_obj *obj)$/;"	f	typeref:typename:void
-ft_calcfin	src/main.c	/^int	ft_calcfin(t_pos *obj, t_voxel *voxel, int depth)$/;"	f	typeref:typename:int
-ft_calcobj	src/main.c	/^void	ft_calcobj(t_rt *rt, t_obj *objet)$/;"	f	typeref:typename:void
-ft_calcpl	src/main.c	/^void	ft_calcpl(t_obj *objet)$/;"	f	typeref:typename:void
-ft_calcsp	src/main.c	/^void	ft_calcsp(t_obj *objet)$/;"	f	typeref:typename:void
-ft_calcvoxel	src/main.c	/^void	ft_calcvoxel(t_obj *objet)$/;"	f	typeref:typename:void
+ft_atoiori	src/main.c	/^t_coord	ft_atoiori(t_rt *rt, char *str)$/;"	f	typeref:typename:t_coord
+ft_bresenham	src/ft_printdroite2.c	/^void	ft_bresenham(t_rt *rt, t_coord one, t_coord two, t_color color)$/;"	f	typeref:typename:void
+ft_bresenhamfourfive	src/ft_printdroite2.c	/^void	ft_bresenhamfourfive(t_rt *rt, t_coord one, t_coord two, t_color color)$/;"	f	typeref:typename:void
+ft_bresenhamoneeight	src/ft_printdroite3.c	/^void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two, t_color color)$/;"	f	typeref:typename:void
+ft_bresenhamthreesix	src/ft_printdroite2.c	/^void	ft_bresenhamthreesix(t_rt *rt, t_coord one, t_coord two, t_color color)$/;"	f	typeref:typename:void
+ft_bresenhamtwoseven	src/ft_printdroite2.c	/^void	ft_bresenhamtwoseven(t_rt *rt, t_coord one, t_coord two, t_color color)$/;"	f	typeref:typename:void
 ft_clearimg	src/main.c	/^void	ft_clearimg(t_rt *rt)$/;"	f	typeref:typename:void
-ft_clearobjlist	src/main.c	/^void	ft_clearobjlist(t_pl *pl, t_pos *obj, int depth)$/;"	f	typeref:typename:void
 ft_closevaria	src/libft/ft_closevaria.c	/^int	ft_closevaria(int i, ...)$/;"	f	typeref:typename:int
-ft_coloradd	src/main.c	/^void	ft_coloradd(t_obj *obj, int color)$/;"	f	typeref:typename:void
-ft_constructtree	src/main.c	/^void	ft_constructtree(t_rt *rt)$/;"	f	typeref:typename:void
+ft_coloralbedo	src/main.c	/^t_color	*ft_coloralbedo(t_rt *rt, float intensity, t_sp *obj)$/;"	f	typeref:typename:t_color *
 ft_crea	src/libft/ft_itoa.c	/^static char	*ft_crea(int n, int i, int moin, t_pos *garbage)$/;"	f	typeref:typename:char *	file:
 ft_exit	src/libft/ft_exit.c	/^void	ft_exit(t_rt *rt, char *str)$/;"	f	typeref:typename:void
-ft_findsplitvoxel	src/main.c	/^t_pl	*ft_findsplitvoxel(t_rt *rt, t_pos *obj, t_voxel *voxel, int depth)$/;"	f	typeref:typename:t_pl *
+ft_findcolor	src/main.c	/^t_color	ft_findcolor(t_rt *rt, t_ray *rayon)$/;"	f	typeref:typename:t_color
+ft_findintensity	src/main.c	/^float	ft_findintensity(t_rt *rt, t_ray *rayon, float sol, t_sp *obj)$/;"	f	typeref:typename:float
+ft_findobj	src/main.c	/^t_obj	*ft_findobj(t_rt *rt, t_ray *rayon, float *sol)$/;"	f	typeref:typename:t_obj *
+ft_findsol	src/main.c	/^float	ft_findsol(t_rt *rt, t_ray *rayon, t_obj *obj)$/;"	f	typeref:typename:float
 ft_firsttracing	src/main.c	/^void	ft_firsttracing(t_rt *rt)$/;"	f	typeref:typename:void
+ft_getblack	src/main.c	/^t_color	ft_getblack()$/;"	f	typeref:typename:t_color
+ft_getblue	src/main.c	/^int	ft_getblue(int rgb)$/;"	f	typeref:typename:int
+ft_getfromint	src/main.c	/^t_color	ft_getfromint(t_rt *rt, int color)$/;"	f	typeref:typename:t_color
+ft_getgreen	src/main.c	/^int	ft_getgreen(int rgb)$/;"	f	typeref:typename:int
+ft_getred	src/main.c	/^int	ft_getred(int rgb)$/;"	f	typeref:typename:int
 ft_gnl2	src/libft/get_next_line.c	/^char	*ft_gnl2(char *str, char *buffer, int fd, t_pos *free)$/;"	f	typeref:typename:char *
-ft_initrt	src/main.c	/^t_rt	*ft_initrt(char **argv)$/;"	f	typeref:typename:t_rt *
+ft_initcam	src/main.c	/^void	ft_initcam(t_rt *rt, t_cam *camera)$/;"	f	typeref:typename:void
+ft_initrt	src/main.c	/^void	ft_initrt(t_rt *rt, char **argv)$/;"	f	typeref:typename:void
 ft_inittruert	src/main.c	/^void	ft_inittruert(t_rt *rt)$/;"	f	typeref:typename:void
-ft_intersection	src/main.c	/^int	ft_intersection(t_rt *rt ,t_ray *rayon, t_sp *sp, t_coord *normal, t_coord *coordinter)$/;"	f	typeref:typename:int
-ft_isonecoordex	src/main.c	/^int		ft_isonecoordex(t_rt *rt, void *obj)$/;"	f	typeref:typename:int
+ft_intersectsp	src/main.c	/^float	ft_intersectsp(t_rt *rt ,t_ray *rayon, t_sp *sp)$/;"	f	typeref:typename:float
 ft_itoa	src/libft/ft_itoa.c	/^char	*ft_itoa(int n, t_pos *garbage)$/;"	f	typeref:typename:char *
 ft_itoagnl	src/libft/get_next_line.c	/^char	*ft_itoagnl(int n, char *str, char *str2)$/;"	f	typeref:typename:char *
 ft_key_hook	src/main.c	/^int	ft_key_hook(int keycode, t_rt *rt)$/;"	f	typeref:typename:int
+ft_lcolor	src/main.c	/^int ft_lcolor()$/;"	f	typeref:typename:int
+ft_lol	src/main.c	/^void	ft_lol(int lol)$/;"	f	typeref:typename:void
 ft_lstdelone	src/libft/ft_lstdelone.c	/^void	ft_lstdelone(t_list *list, int garbage)$/;"	f	typeref:typename:void
-ft_lstdup	src/main.c	/^t_pos	*ft_lstdup(t_pos *pos, t_pos *garbage)$/;"	f	typeref:typename:t_pos *
 ft_lstnew	src/libft/ft_lstnew.c	/^t_list	*ft_lstnew(void *content, t_pos *pos, t_pos *garbage)$/;"	f	typeref:typename:t_list *
-ft_makecam	src/main.c	/^void	*ft_makecam(t_rt *rt, char *str)$/;"	f	typeref:typename:void *
-ft_makecoord	src/ft_printdroite3.c	/^t_coord	*ft_makecoord(t_rt *rt, float x, float y, float z)$/;"	f	typeref:typename:t_coord *
-ft_makefirstvoxel	src/main.c	/^t_voxel *ft_makefirstvoxel(t_rt *rt)$/;"	f	typeref:typename:t_voxel *
-ft_makelight	src/main.c	/^void	*ft_makelight(t_rt *rt, char *str)$/;"	f	typeref:typename:void *
-ft_makenewvoxel	src/main.c	/^t_voxel	*ft_makenewvoxel(t_rt *rt, t_coord *coord1, t_coord *coord2, int *color)$/;"	f	typeref:typename:t_voxel *
+ft_makecam	src/main.c	/^void	ft_makecam(t_rt *rt, char *str)$/;"	f	typeref:typename:void
+ft_makecoord	src/ft_printdroite3.c	/^t_coord	ft_makecoord(t_rt *rt, float x, float y, float z)$/;"	f	typeref:typename:t_coord
+ft_makelight	src/main.c	/^void	ft_makelight(t_rt *rt, char *str)$/;"	f	typeref:typename:void
 ft_makeobj	src/main.c	/^void	*ft_makeobj(t_rt *rt, void *obj, int type)$/;"	f	typeref:typename:void *
 ft_makepl	src/main.c	/^void	*ft_makepl(t_rt *rt, char *str)$/;"	f	typeref:typename:void *
-ft_makeseg	src/main.c	/^void	*ft_makeseg(t_rt *rt, char *str)$/;"	f	typeref:typename:void *
 ft_makesp	src/main.c	/^void	*ft_makesp(t_rt *rt, char *str)$/;"	f	typeref:typename:void *
-ft_makevoxel	src/main.c	/^void	*ft_makevoxel(t_rt *rt, char *str)$/;"	f	typeref:typename:void *
 ft_malloc	src/libft/ft_malloc.c	/^void	*ft_malloc(int size, t_pos *garbage)$/;"	f	typeref:typename:void *
 ft_max	src/libft/ft_max.c	/^int	ft_max(int nb1, int nb2)$/;"	f	typeref:typename:int
 ft_maxchar	src/main.c	/^float	ft_maxchar(float one)$/;"	f	typeref:typename:float
 ft_min	src/libft/ft_min.c	/^int	ft_min(int nb1, int nb2)$/;"	f	typeref:typename:int
 ft_minchar	src/main.c	/^float	ft_minchar(float one)$/;"	f	typeref:typename:float
-ft_moveobj	src/main.c	/^void	ft_moveobj(t_rt *rt, t_obj *obj, t_coord *dep)$/;"	f	typeref:typename:void
-ft_moveonecoord	src/main.c	/^void	ft_moveonecoord(void *obj, t_coord *coord)$/;"	f	typeref:typename:void
-ft_newleaf	src/main.c	/^t_bt	*ft_newleaf(t_rt *rt, t_pos *obj)$/;"	f	typeref:typename:t_bt *
-ft_newnoeu	src/main.c	/^t_bt	*ft_newnoeu(t_rt *rt, t_pos *obj, t_bt *right, t_bt *left)$/;"	f	typeref:typename:t_bt *
 ft_norm	src/main.c	/^void	ft_norm(t_coord *one)$/;"	f	typeref:typename:void
-ft_normcarre	src/main.c	/^float	ft_normcarre(t_coord *one)$/;"	f	typeref:typename:float
+ft_normcarre	src/main.c	/^float	ft_normcarre(t_coord one)$/;"	f	typeref:typename:float
 ft_normcarree	src/main.c	/^float	ft_normcarree(t_coord one)$/;"	f	typeref:typename:float
-ft_objdroite	src/main.c	/^t_pos	*ft_objdroite(t_rt *rt, t_pl *pl, t_pos *obj, int depth)$/;"	f	typeref:typename:t_pos *
-ft_objgauche	src/main.c	/^t_pos	*ft_objgauche(t_rt *rt, t_pl *pl, t_pos *obj, int depth)$/;"	f	typeref:typename:t_pos *
 ft_open	src/main.c	/^void	ft_open(t_rt *rt, char *str)$/;"	f	typeref:typename:void
 ft_parse	src/main.c	/^void	ft_parse(t_rt *rt, char	**in)$/;"	f	typeref:typename:void
 ft_pl	src/ft_cast.c	/^t_pl	*ft_pl(t_list *liste)$/;"	f	typeref:typename:t_pl *
 ft_posclear	src/libft/ft_posclear.c	/^void	ft_posclear(t_pos *pos, int freee)$/;"	f	typeref:typename:void
-ft_preintersection	src/main.c	/^int	ft_preintersection(t_rt *rt, t_ray *rayon)$/;"	f	typeref:typename:int
-ft_printcam	src/main.c	/^void	ft_printcam(t_rt *rt, t_cam *cam)$/;"	f	typeref:typename:void
-ft_printdiag	src/ft_printdroite.c	/^void	ft_printdiag(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
-ft_printdiagonefour	src/ft_printdroite.c	/^void	ft_printdiagonefour(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
-ft_printdiagtwothree	src/ft_printdroite.c	/^void	ft_printdiagtwothree(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
-ft_printdroite	src/ft_printdroite2.c	/^void	ft_printdroite(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
+ft_printdiag	src/ft_printdroite.c	/^void	ft_printdiag(t_rt *rt, t_coord one, t_coord two, t_color color)$/;"	f	typeref:typename:void
+ft_printdiagonefour	src/ft_printdroite.c	/^void	ft_printdiagonefour(t_rt *rt, t_coord one, t_coord two, t_color color)$/;"	f	typeref:typename:void
+ft_printdiagtwothree	src/ft_printdroite.c	/^void	ft_printdiagtwothree(t_rt *rt, t_coord one, t_coord two, t_color color)$/;"	f	typeref:typename:void
+ft_printdroite	src/ft_printdroite2.c	/^void	ft_printdroite(t_rt *rt, t_coord one, t_coord two, t_color color)$/;"	f	typeref:typename:void
 ft_printfirst	src/main.c	/^void	ft_printfirst(t_rt *rt)$/;"	f	typeref:typename:void
-ft_printobj	src/main.c	/^void	ft_printobj(t_rt *rt, t_obj *obj)$/;"	f	typeref:typename:void
-ft_printobjlist	src/main.c	/^void	ft_printobjlist(t_rt *rt, t_pos *print)$/;"	f	typeref:typename:void
-ft_printpixelimg	src/main.c	/^void	ft_printpixelimg(t_rt *rt, t_coord *print, int color)$/;"	f	typeref:typename:void
-ft_printpl	src/main.c	/^void	ft_printpl(t_rt *rt, t_pl *pl)$/;"	f	typeref:typename:void
-ft_printpl2	src/main.c	/^void	ft_printpl2(t_rt *rt, t_pl *pl, t_voxel *voxel)$/;"	f	typeref:typename:void
-ft_printsamex	src/ft_printdroite.c	/^void	ft_printsamex(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
-ft_printsamey	src/ft_printdroite.c	/^void	ft_printsamey(t_rt *rt, t_coord one, t_coord two, int color)$/;"	f	typeref:typename:void
-ft_printseg	src/main.c	/^void	ft_printseg(t_rt *rt, t_seg *seg)$/;"	f	typeref:typename:void
+ft_printpixelimg	src/main.c	/^void	ft_printpixelimg(t_rt *rt, t_coord print, t_color color)$/;"	f	typeref:typename:void
+ft_printsamex	src/ft_printdroite.c	/^void	ft_printsamex(t_rt *rt, t_coord one, t_coord two, t_color color)$/;"	f	typeref:typename:void
+ft_printsamey	src/ft_printdroite.c	/^void	ft_printsamey(t_rt *rt, t_coord one, t_coord two, t_color color)$/;"	f	typeref:typename:void
 ft_printsp	src/ft_printsp.c	/^void	ft_printsp(t_rt *rt, t_sp *sp)$/;"	f	typeref:typename:void
-ft_printvoxel	src/main.c	/^void	ft_printvoxel(t_rt *rt, t_voxel *voxel)$/;"	f	typeref:typename:void
 ft_putnbrfd	src/libft/ft_putnbrfd.c	/^void	ft_putnbrfd(int n, int fd)$/;"	f	typeref:typename:void
 ft_quit	src/main.c	/^int	ft_quit(t_rt *rt)$/;"	f	typeref:typename:int
 ft_read	src/libft/get_next_line.c	/^void	ft_read(char *buffer, int fd)$/;"	f	typeref:typename:void
-ft_recalc	src/main.c	/^void	ft_recalc(t_rt *rt)$/;"	f	typeref:typename:void
+ft_regetcolorint	src/main.c	/^int	ft_regetcolorint(t_color *color)$/;"	f	typeref:typename:int
 ft_remp	src/libft/ft_itoa.c	/^static char	*ft_remp(char *str, int n, int i)$/;"	f	typeref:typename:char *	file:
 ft_retintmin	src/libft/ft_itoa.c	/^static char	*ft_retintmin(int i, t_pos *garbage)$/;"	f	typeref:typename:char *	file:
 ft_return	src/libft/get_next_line.c	/^char	*ft_return(char *str, char *buffer)$/;"	f	typeref:typename:char *
 ft_rtcolor	src/main.c	/^void	ft_rtcolor(t_rt *rt)$/;"	f	typeref:typename:void
-ft_scalaire	src/main.c	/^float	ft_scalaire(t_coord *one, t_coord two)$/;"	f	typeref:typename:float
+ft_scalaire	src/main.c	/^float	ft_scalaire(t_coord one, t_coord two)$/;"	f	typeref:typename:float
 ft_seg	src/ft_cast.c	/^t_seg	*ft_seg(t_list *liste)$/;"	f	typeref:typename:t_seg *
 ft_setpos	src/libft/ft_setpos.c	/^t_pos	*ft_setpos(t_pos *garbage)$/;"	f	typeref:typename:t_pos *
 ft_sp	src/ft_cast.c	/^t_sp	*ft_sp(t_list *liste)$/;"	f	typeref:typename:t_sp *
 ft_split	src/libft/ft_split.c	/^char	**ft_split(char const *s, char c, t_pos *free)$/;"	f	typeref:typename:char **
-ft_splitvoxeldroite	src/main.c	/^t_voxel	*ft_splitvoxeldroite(t_rt *rt, t_voxel *voxel, t_pl *pl, int depth)$/;"	f	typeref:typename:t_voxel *
-ft_splitvoxelgauche	src/main.c	/^t_voxel	*ft_splitvoxelgauche(t_rt *rt, t_voxel *voxel, t_pl *pl, int depth)$/;"	f	typeref:typename:t_voxel *
 ft_strcmp	src/libft/ft_strcmp.c	/^int	ft_strcmp(const char *str1, const char *str2)$/;"	f	typeref:typename:int
 ft_strdup	src/libft/ft_strdup.c	/^char	*ft_strdup(const char *s, t_pos *garbage)$/;"	f	typeref:typename:char *
 ft_strjoin	src/libft/ft_strjoin.c	/^char	*ft_strjoin(char *s1, char *s2, t_pos *garb)$/;"	f	typeref:typename:char *
@@ -323,8 +308,7 @@ ft_swapx	src/ft_printdroite.c	/^void	ft_swapx(t_coord *one, t_coord *two)$/;"	f	
 ft_swapy	src/ft_printdroite.c	/^void	ft_swapy(t_coord *one, t_coord *two)$/;"	f	typeref:typename:void
 ft_type	src/ft_cast.c	/^int	ft_type(t_list *liste)$/;"	f	typeref:typename:int
 ft_voxel	src/ft_cast.c	/^t_voxel	*ft_voxel(t_list *liste)$/;"	f	typeref:typename:t_voxel *
-ft_voxelsplit	src/main.c	/^t_coord	*ft_voxelsplit(t_rt *rt, t_voxel *voxel)$/;"	f	typeref:typename:t_coord *
-ft_voxeluconstruct	src/main.c	/^t_bt	*ft_voxeluconstruct(t_rt *rt, t_pos *obj, t_voxel *voxel, int depth)$/;"	f	typeref:typename:t_bt *
+ft_wasinshaddow	src/main.c	/^int	ft_wasinshaddow(t_rt *rt, t_coord *obj)$/;"	f	typeref:typename:int
 ft_wcount	src/libft/ft_split.c	/^static int	ft_wcount(char const *s, char c)$/;"	f	typeref:typename:int	file:
 ft_wlen	src/libft/ft_split.c	/^static int	ft_wlen(char const *s, char c)$/;"	f	typeref:typename:int	file:
 ft_zero	src/libft/ft_itoa.c	/^static char	*ft_zero(int i, t_pos *garbage)$/;"	f	typeref:typename:char *	file:
@@ -334,6 +318,7 @@ gc	minilibx-linux/mlx_int.h	/^	GC				gc;$/;"	m	struct:s_img	typeref:typename:GC
 gere_mouse	minilibx-linux/test/new_win.c	/^int gere_mouse(int x,int y,int button,void*toto)$/;"	f	typeref:typename:int
 get_next_line	src/libft/get_next_line.c	/^char	*get_next_line(int fd, t_pos *free)$/;"	f	typeref:typename:char *
 get_xlib_include_path	minilibx-linux/configure	/^get_xlib_include_path(){$/;"	f
+green	include/rt.h	/^	int	green;$/;"	m	struct:s_color	typeref:typename:int
 height	minilibx-linux/mlx_int.h	/^	int				height;$/;"	m	struct:s_img	typeref:typename:int
 hook	minilibx-linux/mlx_int.h	/^	int		(*hook)();$/;"	m	struct:s_event_list	typeref:typename:int (*)()
 hooks	minilibx-linux/mlx_int.h	/^	t_event_list		hooks[MLX_MAX_EVENT];$/;"	m	struct:s_win_list	typeref:typename:t_event_list[]
@@ -351,7 +336,7 @@ key_win1	minilibx-linux/test/main.c	/^int	key_win1(int key,void *p)$/;"	f	typere
 key_win2	minilibx-linux/test/main.c	/^int	key_win2(int key,void *p)$/;"	f	typeref:typename:int
 key_win3	minilibx-linux/test/main.c	/^int	key_win3(int key,void *p)$/;"	f	typeref:typename:int
 left	include/rt.h	/^	struct s_bt *left;$/;"	m	struct:s_bt	typeref:struct:s_bt *
-light	include/rt.h	/^	t_obj		*light;$/;"	m	struct:s_rt	typeref:typename:t_obj *
+light	include/rt.h	/^	t_light		light;$/;"	m	struct:s_rt	typeref:typename:t_light
 local_endian	minilibx-linux/test/main.c	/^int	local_endian;$/;"	v	typeref:typename:int
 log_error	minilibx-linux/configure	/^log_error(){$/;"	f
 log_error	minilibx-linux/test/run_tests.sh	/^log_error(){$/;"	f
@@ -366,6 +351,7 @@ main	minilibx-linux/test/main.c	/^int	main()$/;"	f	typeref:typename:int
 main	minilibx-linux/test/new_win.c	/^int main()$/;"	f	typeref:typename:int
 main	minilibx-linux/test/run_tests.sh	/^main(){$/;"	f
 main	src/main.c	/^int	main(int argc, char **argv)$/;"	f	typeref:typename:int
+main	test.c	/^int main()$/;"	f	typeref:typename:int
 mask	minilibx-linux/mlx_int.h	/^	int		mask;$/;"	m	struct:s_event_list	typeref:typename:int
 mlx	minilibx-linux/test/main.c	/^void	*mlx;$/;"	v	typeref:typename:void *
 mlx	minilibx-linux/test/new_win.c	/^void *mlx;$/;"	v	typeref:typename:void *
@@ -447,6 +433,7 @@ name	minilibx-linux/mlx_int.h	/^	char	*name;$/;"	m	struct:s_col_name	typeref:typ
 name	minilibx-linux/mlx_int.h	/^	int		name;$/;"	m	struct:s_xpm_col	typeref:typename:int
 next	include/rt.h	/^	struct s_list	*next;$/;"	m	struct:s_list	typeref:struct:s_list *
 next	minilibx-linux/mlx_int.h	/^	struct s_win_list	*next;$/;"	m	struct:s_win_list	typeref:struct:s_win_list *
+normal	src/main.c	/^	t_coord	normal;$/;"	m	struct:s_temp	typeref:typename:t_coord	file:
 obj	include/rt.h	/^	t_pos		*obj;$/;"	m	struct:s_rt	typeref:typename:t_pos *
 obj	include/rt.h	/^	t_pos	*obj;$/;"	m	struct:s_bt	typeref:typename:t_pos *
 obj	include/rt.h	/^	void	*obj;$/;"	m	struct:s_obj	typeref:typename:void *
@@ -456,9 +443,10 @@ objymax	include/rt.h	/^	float		objymax;$/;"	m	struct:s_rt	typeref:typename:float
 objymin	include/rt.h	/^	float		objymin;$/;"	m	struct:s_rt	typeref:typename:float
 objzmax	include/rt.h	/^	float		objzmax;$/;"	m	struct:s_rt	typeref:typename:float
 objzmin	include/rt.h	/^	float		objzmin;$/;"	m	struct:s_rt	typeref:typename:float
-ori	include/rt.h	/^	t_coord	*ori;$/;"	m	struct:s_pl	typeref:typename:t_coord *
-ori	include/rt.h	/^	t_coord	*ori;$/;"	m	struct:s_ray	typeref:typename:t_coord *
-origin	include/rt.h	/^	t_coord		*origin;$/;"	m	struct:s_rt	typeref:typename:t_coord *
+ori	include/rt.h	/^	t_coord	ori;$/;"	m	struct:s_cam	typeref:typename:t_coord
+ori	include/rt.h	/^	t_coord	ori;$/;"	m	struct:s_pl	typeref:typename:t_coord
+ori	include/rt.h	/^	t_coord	ori;$/;"	m	struct:s_ray	typeref:typename:t_coord
+origin	include/rt.h	/^	t_coord		origin;$/;"	m	struct:s_rt	typeref:typename:t_coord
 origin	include/rt.h	/^	void	*origin;$/;"	m	struct:s_imginfo	typeref:typename:void *
 ouijesais	src/libft/ft_putnbrfd.c	/^static void	ouijesais(char c, int fd)$/;"	f	typeref:typename:void	file:
 param	minilibx-linux/mlx_int.h	/^	void	*param;$/;"	m	struct:s_event_list	typeref:typename:void *
@@ -472,11 +460,15 @@ rayon	include/rt.h	/^	float	rayon;$/;"	m	struct:s_sp	typeref:typename:float
 re	Makefile	/^re			: fclean all $/;"	t
 re	minilibx-linux/Makefile	/^re	: clean all$/;"	t
 re	minilibx-linux/test/Makefile.mk	/^re: clean all$/;"	t
+red	include/rt.h	/^	int	red;$/;"	m	struct:s_color	typeref:typename:int
 right	include/rt.h	/^	struct s_bt *right;$/;"	m	struct:s_bt	typeref:struct:s_bt *
+right	include/rt.h	/^	t_coord	right;$/;"	m	struct:s_cam	typeref:typename:t_coord
 root	minilibx-linux/mlx_int.h	/^	Window		root;$/;"	m	struct:s_xvar	typeref:typename:Window
+rotate_camera	src/main.c	/^void	rotate_camera(t_cam *camera, t_ori direction)$/;"	f	typeref:typename:void
 s_bt	include/rt.h	/^typedef struct s_bt$/;"	s
-s_cam	include/rt.h	/^typedef struct s_cam$/;"	s
+s_cam	include/rt.h	/^typedef struct	s_cam$/;"	s
 s_col_name	minilibx-linux/mlx_int.h	/^struct	s_col_name$/;"	s
+s_color	include/rt.h	/^typedef struct s_color$/;"	s
 s_event_list	minilibx-linux/mlx_int.h	/^typedef struct	s_event_list$/;"	s
 s_img	minilibx-linux/mlx_int.h	/^typedef struct	s_img$/;"	s
 s_imginfo	include/rt.h	/^typedef struct s_imginfo$/;"	s
@@ -489,14 +481,15 @@ s_ray	include/rt.h	/^typedef struct s_ray$/;"	s
 s_rt	include/rt.h	/^typedef struct s_rt$/;"	s
 s_seg	include/rt.h	/^typedef struct s_seg$/;"	s
 s_sp	include/rt.h	/^typedef struct s_sp$/;"	s
+s_temp	src/main.c	/^typedef struct	s_temp$/;"	s	file:
 s_voxel	include/rt.h	/^typedef struct s_voxel$/;"	s
 s_win_list	minilibx-linux/mlx_int.h	/^typedef struct	s_win_list$/;"	s
 s_xpm_col	minilibx-linux/mlx_int.h	/^typedef	struct	s_xpm_col$/;"	s
 s_xvar	minilibx-linux/mlx_int.h	/^typedef struct	s_xvar$/;"	s
 saved_mode	minilibx-linux/mlx_ext_randr.c	/^RRMode	saved_mode = 0;$/;"	v	typeref:typename:RRMode
 screen	minilibx-linux/mlx_int.h	/^	int			screen;$/;"	m	struct:s_xvar	typeref:typename:int
-second	include/rt.h	/^	t_coord	*second;$/;"	m	struct:s_seg	typeref:typename:t_coord *
-second	include/rt.h	/^	t_coord	*second;$/;"	m	struct:s_voxel	typeref:typename:t_coord *
+second	include/rt.h	/^	t_coord	second;$/;"	m	struct:s_seg	typeref:typename:t_coord
+second	include/rt.h	/^	t_coord	second;$/;"	m	struct:s_voxel	typeref:typename:t_coord
 shm	minilibx-linux/mlx_int.h	/^	XShmSegmentInfo	shm;$/;"	m	struct:s_img	typeref:typename:XShmSegmentInfo
 shm_att_pb	minilibx-linux/mlx_new_image.c	/^int	shm_att_pb(Display *d,XErrorEvent *ev)$/;"	f	typeref:typename:int
 show	minilibx-linux/Makefile.mk	/^show:$/;"	t
@@ -511,9 +504,11 @@ sl2	minilibx-linux/test/main.c	/^int	sl2;$/;"	v	typeref:typename:int
 sl3	minilibx-linux/test/main.c	/^int	sl3;$/;"	v	typeref:typename:int
 sl4	minilibx-linux/test/main.c	/^int	sl4;$/;"	v	typeref:typename:int
 start	include/rt.h	/^	struct s_list	*start;$/;"	m	struct:s_pos	typeref:struct:s_list *
+start_camera	src/main.c	/^void	start_camera(t_rt *rt)$/;"	f	typeref:typename:void
 strlcpy_is_not_posix	minilibx-linux/mlx_xpm.c	/^unsigned int	strlcpy_is_not_posix(char *dest, char *src, unsigned int size)$/;"	f	typeref:typename:unsigned int
 t_bt	include/rt.h	/^}	t_bt;$/;"	t	typeref:struct:s_bt
-t_cam	include/rt.h	/^}	t_cam;$/;"	t	typeref:struct:s_cam
+t_cam	include/rt.h	/^}				t_cam;$/;"	t	typeref:struct:s_cam
+t_color	include/rt.h	/^}	t_color;$/;"	t	typeref:struct:s_color
 t_coord	include/rt.h	/^typedef float t_coord __attribute__((ext_vector_type(3)));$/;"	t	typeref:typename:float
 t_event_list	minilibx-linux/mlx_int.h	/^}				t_event_list;$/;"	t	typeref:struct:s_event_list
 t_img	minilibx-linux/mlx_int.h	/^}				t_img;$/;"	t	typeref:struct:s_img
@@ -527,6 +522,7 @@ t_ray	include/rt.h	/^}	t_ray;$/;"	t	typeref:struct:s_ray
 t_rt	include/rt.h	/^}	t_rt;$/;"	t	typeref:struct:s_rt
 t_seg	include/rt.h	/^}	t_seg;$/;"	t	typeref:struct:s_seg
 t_sp	include/rt.h	/^}	t_sp;$/;"	t	typeref:struct:s_sp
+t_temp	src/main.c	/^}	t_temp;$/;"	t	typeref:struct:s_temp	file:
 t_voxel	include/rt.h	/^}	t_voxel;$/;"	t	typeref:struct:s_voxel
 t_win_list	minilibx-linux/mlx_int.h	/^}				t_win_list;$/;"	t	typeref:struct:s_win_list
 t_xpm_col	minilibx-linux/mlx_int.h	/^}				t_xpm_col;$/;"	t	typeref:struct:s_xpm_col
@@ -534,6 +530,7 @@ t_xvar	minilibx-linux/mlx_int.h	/^}				t_xvar;$/;"	t	typeref:struct:s_xvar
 test_default_main	minilibx-linux/test/run_tests.sh	/^test_default_main(){$/;"	f
 type	include/rt.h	/^	int		type;$/;"	m	struct:s_obj	typeref:typename:int
 type	minilibx-linux/mlx_int.h	/^	int				type;$/;"	m	struct:s_img	typeref:typename:int
+up	include/rt.h	/^	t_coord	up;$/;"	m	struct:s_cam	typeref:typename:t_coord
 use_xshm	minilibx-linux/mlx_int.h	/^	int			use_xshm;$/;"	m	struct:s_xvar	typeref:typename:int
 visual	minilibx-linux/mlx_int.h	/^	Visual		*visual;$/;"	m	struct:s_xvar	typeref:typename:Visual *
 width	minilibx-linux/mlx_int.h	/^	int				width;$/;"	m	struct:s_img	typeref:typename:int
@@ -553,6 +550,8 @@ xmin	include/rt.h	/^	float		xmin;$/;"	m	struct:s_obj	typeref:typename:float
 xpm1_x	minilibx-linux/test/main.c	/^int	xpm1_x;$/;"	v	typeref:typename:int
 xpm1_y	minilibx-linux/test/main.c	/^int	xpm1_y;$/;"	v	typeref:typename:int
 xsize	include/rt.h	/^	int			xsize;$/;"	m	struct:s_rt	typeref:typename:int
+yes	include/rt.h	/^	bool	yes;$/;"	m	struct:s_cam	typeref:typename:bool
+yes	include/rt.h	/^	bool	yes;$/;"	m	struct:s_light	typeref:typename:bool
 ymax	include/rt.h	/^	float		ymax;$/;"	m	struct:s_obj	typeref:typename:float
 ymin	include/rt.h	/^	float		ymin;$/;"	m	struct:s_obj	typeref:typename:float
 ysize	include/rt.h	/^	int			ysize;$/;"	m	struct:s_rt	typeref:typename:int

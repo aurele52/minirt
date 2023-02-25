@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 20:59:29 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/21 20:36:39 by audreyer         ###   ########.fr       */
+/*   Updated: 2023/01/09 22:48:17 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_swapx(t_coord *one, t_coord *two)
 	two->x = mem;
 }
 
-void	ft_printsamey(t_rt *rt, t_coord one, t_coord two, int color)
+void	ft_printsamey(t_rt *rt, t_coord one, t_coord two, t_color color)
 {	
 	if (two.x > one.x)
 		ft_swapx(&one, &two);
@@ -41,7 +41,7 @@ void	ft_printsamey(t_rt *rt, t_coord one, t_coord two, int color)
 	}
 }
 
-void	ft_printdiagonefour(t_rt *rt, t_coord one, t_coord two, int color)
+void	ft_printdiagonefour(t_rt *rt, t_coord one, t_coord two, t_color color)
 {
 	while (one.x != two.x)
 	{
@@ -52,7 +52,7 @@ void	ft_printdiagonefour(t_rt *rt, t_coord one, t_coord two, int color)
 	ft_printpixelimg(rt, ft_makecoord(rt, one.x, one.y, 0), color);
 }
 
-void	ft_printdiagtwothree(t_rt *rt, t_coord one, t_coord two, int color)
+void	ft_printdiagtwothree(t_rt *rt, t_coord one, t_coord two, t_color color)
 {
 	while (one.x != two.x)
 	{
@@ -63,7 +63,7 @@ void	ft_printdiagtwothree(t_rt *rt, t_coord one, t_coord two, int color)
 	ft_printpixelimg(rt, ft_makecoord(rt, one.x, one.y, 0), color);
 }
 
-void	ft_printdiag(t_rt *rt, t_coord one, t_coord two, int color)
+void	ft_printdiag(t_rt *rt, t_coord one, t_coord two, t_color color)
 {
 	if (one.x - two.x == one.y - two.y)
 	{
@@ -79,7 +79,7 @@ void	ft_printdiag(t_rt *rt, t_coord one, t_coord two, int color)
 	}
 }
 
-void	ft_printsamex(t_rt *rt, t_coord one, t_coord two, int color)
+void	ft_printsamex(t_rt *rt, t_coord one, t_coord two, t_color color)
 {
 	if (one.x == two.x)
 	{

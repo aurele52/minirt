@@ -6,22 +6,20 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 21:02:08 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/21 20:35:59 by audreyer         ###   ########.fr       */
+/*   Updated: 2023/01/09 22:47:50 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-t_coord	*ft_makecoord(t_rt *rt, float x, float y, float z)
+t_coord	ft_makecoord(t_rt *rt, float x, float y, float z)
 {
-	t_coord	*coord;
+	static t_coord	coord;
 
-	coord = ft_malloc(sizeof(t_coord), rt->garbage);
-	if (!coord)
-		ft_exit(rt, "malloc error\n");
-	coord->x = x;
-	coord->y = y;
-	coord->z = z;
+	(void)rt;
+	coord.x = x;
+	coord.y = y;
+	coord.z = z;
 	return (coord);
 }
 
@@ -43,7 +41,7 @@ void	ft_swap(float *a, float *b)
 	*b = mem;
 }
 
-void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two, int color)
+void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two, t_color color)
 {
 	int	e;
 	int	dy;

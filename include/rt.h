@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:22:31 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/22 16:14:46 by audreyer         ###   ########.fr       */
+/*   Updated: 2023/01/10 16:44:38 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,15 @@
 # define ZLIMITE 0.1
 # define BUFFER_SIZE 2000
 # include <stdlib.h>
+# include <limits.h>
+# include <float.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdarg.h>
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <stdbool.h>
 
 typedef float t_coord __attribute__((ext_vector_type(3)));
 
@@ -35,6 +38,13 @@ typedef struct s_pos
 	int				*size;
 }	t_pos;
 
+typedef struct s_color
+{
+	int	red;
+	int	blue;
+	int	green;
+}	t_color;
+
 typedef struct s_list
 {
 	struct s_list	*next;
@@ -43,52 +53,67 @@ typedef struct s_list
 	struct s_pos	*pos;
 }	t_list;
 
-typedef struct s_cam
+typedef struct	s_cam
 {
-	int	color;
-	t_coord	*coord;
-}	t_cam;
+	bool	yes;
+	t_coord	coord;
+	t_coord	ori;
+	t_coord	bottom_left;
+	t_coord	right;
+	t_coord	up;
+	t_color	color;
+	int		fov;
+}				t_cam;
+
+typedef struct	s_rotation
+{
+	float	yaw;
+	float	pitch;
+	float	roll;
+}				t_rotation;
 
 typedef struct s_sp
 {
-	int	color;
-	t_coord	*coord;
+	t_color	color;
+	t_coord	coord;
 	float	rayon;
 }	t_sp;
 
 typedef struct s_pl
 {
-	int	color;
-	t_coord	*coord;
-	t_coord	*ori;
+	t_color	color;
+	t_coord	coord;
+	t_coord	ori;
 }	t_pl;
 
 typedef struct s_ray
 {
-	int	color;
-	t_coord	*coord;
-	t_coord	*ori;
+	t_color	color;
+	t_coord	coord;
+	t_coord	ori;
+	t_coord	through;
 }	t_ray;
 
 typedef struct s_seg
 {
-	int	color;
-	t_coord	*first;
-	t_coord	*second;
+	t_color	color;
+	t_coord	first;
+	t_coord	second;
 }	t_seg;
 
 typedef struct s_voxel
 {
-	int	color;
-	t_coord	*first;
-	t_coord	*second;
+	t_color	color;
+	t_coord	first;
+	t_coord	second;
 }	t_voxel;
 
 typedef struct s_light
 {
-	int	color;
-	t_coord	*coord;
+	t_color	color;
+	t_coord	coord;
 	float	intensiter;
+	bool	yes;
 }	t_light;
 
 enum e_objtype
@@ -145,10 +170,10 @@ typedef struct s_rt
 	float		objxmax;
 	float		objymax;
 	float		fov;
-	t_coord		*origin;
-	int			*color;
-	t_obj		*cam;
-	t_obj		*light;
+	t_color		color;
+	t_coord		origin;
+	t_cam		cam;
+	t_light		light;
 	t_pos		*obj;
 }	t_rt;
 
@@ -171,20 +196,20 @@ int		ft_type(t_list *liste);
 
 /*droite*/
 
-void	ft_printsamey(t_rt *rt, t_coord one, t_coord two, int color);
-void	ft_printdiagonefour(t_rt *rt, t_coord one, t_coord two, int color);
-void	ft_printdiagtwothree(t_rt *rt, t_coord one, t_coord two, int color);
-void	ft_printdiag(t_rt *rt, t_coord one, t_coord two, int color);
-void	ft_printsamex(t_rt *rt, t_coord one, t_coord two, int color);
-void	ft_printdroite(t_rt *rt, t_coord one, t_coord two, int color);
-void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two, int color);
+void	ft_printsamey(t_rt *rt, t_coord one, t_coord two, t_color color);
+void	ft_printdiagonefour(t_rt *rt, t_coord one, t_coord two, t_color color);
+void	ft_printdiagtwothree(t_rt *rt, t_coord one, t_coord two, t_color color);
+void	ft_printdiag(t_rt *rt, t_coord one, t_coord two, t_color color);
+void	ft_printsamex(t_rt *rt, t_coord one, t_coord two, t_color color);
+void	ft_printdroite(t_rt *rt, t_coord one, t_coord two, t_color color);
+void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two, t_color color);
 
 /*utils*/
 
 void	ft_swapcoord(t_coord *a, t_coord *b);
 void	ft_swap(float *a, float *b);
-void	ft_printpixelimg(t_rt *rt, t_coord *print, int color);
-t_coord	*ft_makecoord(t_rt *rt, float x, float y, float z);
+void	ft_printpixelimg(t_rt *rt, t_coord print, t_color color);
+t_coord	ft_makecoord(t_rt *rt, float x, float y, float z);
 
 /*Sphere*/
 
