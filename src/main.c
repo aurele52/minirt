@@ -853,7 +853,6 @@ t_obj	*ft_findobj(t_rt *rt, t_ray *rayon, float *sol);
 int	ft_wasinshaddow(t_rt *rt, t_coord *obj)
 {
 	t_ray	rayon;
-	t_sp	*objact;
 	t_obj	*obja;
 	float	sol;
 	t_coord	ori;
@@ -868,7 +867,6 @@ int	ft_wasinshaddow(t_rt *rt, t_coord *obj)
 	obja = ft_findobj(rt, &rayon, &sol);
 	if (!obja)
 		return (0);
-	objact = obja->obj;
 	if (sol < 1 && sol > 0)
 		return (1);
 	return (0);
