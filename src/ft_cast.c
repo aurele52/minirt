@@ -10,57 +10,56 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "../include/rt.h"
 
-t_cam	*ft_C(t_list *liste)
+// t_sp	*ft_sp(t_list *liste)
+// {
+// 	t_obj	*obj;
+// 	t_sp	*sp;
+//
+// 	obj = (t_obj *)liste->content;
+// 	sp = (t_sp *)obj->obj;
+// 	return (sp);
+// }
+//
+// t_pl	*ft_pl(t_list *liste)
+// {
+// 	t_obj	*obj;
+// 	t_pl	*pl;
+//
+// 	obj = (t_obj *)liste->content;
+// 	pl = (t_pl *)obj->obj;
+// 	return (pl);
+// }
+
+t_square	*ft_square(t_list *liste)
 {
 	t_obj	*obj;
-	t_cam	*cam;
+	t_square	*square;
 
 	obj = (t_obj *)liste->content;
-	cam = (t_cam *)obj->obj;
-	return (cam);
+	square = (t_square *)obj->obj;
+	return (square);
 }
 
-t_sp	*ft_sp(t_list *liste)
+t_lycee	*listToLycee(t_list *liste)
 {
 	t_obj	*obj;
-	t_sp	*sp;
+	t_lycee *lycee;
 
 	obj = (t_obj *)liste->content;
-	sp = (t_sp *)obj->obj;
-	return (sp);
+	lycee = (t_lycee *)obj->obj;
+	return (lycee);
 }
-
-t_pl	*ft_pl(t_list *liste)
-{
-	t_obj	*obj;
-	t_pl	*pl;
-
-	obj = (t_obj *)liste->content;
-	pl = (t_pl *)obj->obj;
-	return (pl);
-}
-
-t_voxel	*ft_voxel(t_list *liste)
-{
-	t_obj	*obj;
-	t_voxel	*voxel;
-
-	obj = (t_obj *)liste->content;
-	voxel = (t_voxel *)obj->obj;
-	return (voxel);
-}
-
-t_seg	*ft_seg(t_list *liste)
-{
-	t_obj	*obj;
-	t_seg	*seg;
-
-	obj = (t_obj *)liste->content;
-	seg = (t_seg *)obj->obj;
-	return (seg);
-}
+// t_seg	*ft_seg(t_list *liste)
+// {
+// 	t_obj	*obj;
+// 	t_seg	*seg;
+//
+// 	obj = (t_obj *)liste->content;
+// 	seg = (t_seg *)obj->obj;
+// 	return (seg);
+// }
 
 int	ft_type(t_list *liste)
 {

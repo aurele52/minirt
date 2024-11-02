@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "../../include/rt.h"
 
 void	ft_lstdelone(t_list *list, int garbage)
 {
 	if (garbage != 0)
 		free(list->content);
-	*list->pos->size = *list->pos->size - 1;
+	list->pos->size = list->pos->size - 1;
 	if (list->pos->start->back == list->pos->start)
 		list->pos->start = 0;
 	else

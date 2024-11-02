@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "../../include/rt.h"
 
 int	ft_strlengnl(char *str);
 int	ft_atoignl(const char *str);
@@ -76,11 +76,11 @@ char	*ft_gnl2(char *str, char *buffer, int fd, t_pos *free)
 			ft_read(buffer, fd);
 		}
 		mem = i;
-		while (buffer[i] != '\n' && buffer[i] != 0 && buffer[i] != -1)
+		while (buffer[i] != '}' && buffer[i] != 0 && buffer[i] != -1)
 			i++;
 		str = ft_strjoin(str, ft_substr(&buffer[mem],
 					0, i - mem + 1, free), free);
-		if (buffer[i] == '\n')
+		if (buffer[i] == '}')
 			return (ft_itoagnl(i, buffer, str));
 		if (buffer[i] == 0)
 			return (ft_return(str, buffer));

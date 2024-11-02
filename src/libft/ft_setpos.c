@@ -10,25 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "../../include/rt.h"
 
 t_pos	*ft_setpos(t_pos *garbage)
 {
 	t_pos	*pos;
-	int		*size;
+	int		size;
 
-	size = ft_malloc(sizeof(*size), garbage);
 	if (size == 0)
 		return (0);
 	pos = ft_malloc(sizeof(*pos), garbage);
 	if (pos == 0)
 	{
-		if (garbage == 0)
-			free(size);
 		return (0);
 	}
-	pos->size = size;
+	pos->size = 0;
 	pos->start = 0;
-	*size = 0;
 	return (pos);
 }

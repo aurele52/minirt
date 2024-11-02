@@ -10,32 +10,39 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "../include/rt.h"
 
-void	ft_printsp(t_rt *rt, t_sp *sp)
-{
-	int	x;
-	int	y;
-	int	m;
-	x = 0;
-	y = sp->rayon;
-	m = 5 - 4 * sp->rayon;
-	while (x <= y)
-	{
-		ft_printpixelimg(rt, ft_makecoord(rt, x + sp->coord.x, y + sp->coord.y, 0), sp->color);
-		ft_printpixelimg(rt, ft_makecoord(rt, y + sp->coord.x, x + sp->coord.y, 0), sp->color);
-		ft_printpixelimg(rt, ft_makecoord(rt, -x + sp->coord.x, y + sp->coord.y, 0), sp->color);
-		ft_printpixelimg(rt, ft_makecoord(rt, -y + sp->coord.x, x + sp->coord.y, 0), sp->color);
-		ft_printpixelimg(rt, ft_makecoord(rt, x + sp->coord.x, -y + sp->coord.y, 0), sp->color);
-		ft_printpixelimg(rt, ft_makecoord(rt, y + sp->coord.x, -x + sp->coord.y, 0), sp->color);
-		ft_printpixelimg(rt, ft_makecoord(rt, -x + sp->coord.x, -y + sp->coord.y, 0), sp->color);
-		ft_printpixelimg(rt, ft_makecoord(rt, -y + sp->coord.x, -x + sp->coord.y, 0), sp->color);
-		if (m > 0)
-		{
-			y = y - 1;
-			m = m - 8 * y;
-		}
-		x++;
-		m = m + 8 * x + 4;
+void drawCircle(t_rt *rt, double x0, double y0, int radius, t_color color) {
+	if (TEST == 1) {
+		x0 = (((x0 + 5.14) / (9.56 + 5.14)) * 800) + 100;
+		y0 = ((1 - ((y0 - 41.32) / (51.09 - 41.32))) * 800) + 100;
 	}
+	int x = radius;
+    int y = 0;
+    int decisionOver2 = 1 - x;
+
+    while (y <= x) {
+        ft_printpixelimg(rt, ft_makecoord(rt, x + x0, y + y0), color);  // Octant 1
+        ft_printpixelimg(rt, ft_makecoord(rt, y + x0, x + y0), color);  // Octant 2
+        ft_printpixelimg(rt, ft_makecoord(rt, -x + x0, y + y0), color); // Octant 4
+        ft_printpixelimg(rt, ft_makecoord(rt, -y + x0, x + y0), color); // Octant 3
+        ft_printpixelimg(rt, ft_makecoord(rt, -x + x0, -y + y0), color); // Octant 5
+        ft_printpixelimg(rt, ft_makecoord(rt, -y + x0, -x + y0), color); // Octant 6
+        ft_printpixelimg(rt, ft_makecoord(rt, x + x0, -y + y0), color);  // Octant 7
+        ft_printpixelimg(rt, ft_makecoord(rt, y + x0, -x + y0), color);  // Octant 8
+        y++;
+
+        if (decisionOver2 <= 0) {
+            decisionOver2 += 2 * y + 1;
+        } else {
+            x--;
+            decisionOver2 += 2 * (y - x) + 1;
+        }
+    }
+}
+
+void	ft_printLycee(t_rt *rt, t_lycee *sp)
+{
+	if (sp->coord.x != 0 && sp->coord.y != 0)
+	drawCircle(rt, sp->coord.x, sp->coord.y, sp->rayon, sp->color);
 }

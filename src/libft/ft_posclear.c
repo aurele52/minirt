@@ -10,17 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "../../include/rt.h"
 
 void	ft_posclear(t_pos *pos, int freee)
 {
 	if (pos != NULL)
 	{
-		while (*pos->size != 0)
+		while (pos->size != 0)
 			ft_lstdelone(pos->start, freee);
 		if (freee == 2)
 		{
-			free(pos->size);
 			free(pos);
 		}
 	}

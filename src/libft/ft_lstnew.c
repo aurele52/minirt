@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "../../include/rt.h"
 
 t_list	*ft_lstnew(void *content, t_pos *pos, t_pos *garbage)
 {
@@ -21,7 +21,7 @@ t_list	*ft_lstnew(void *content, t_pos *pos, t_pos *garbage)
 		return (0);
 	liste->content = content;
 	liste->pos = pos;
-	*liste->pos->size = *liste->pos->size + 1;
+	liste->pos->size = liste->pos->size + 1;
 	if (pos->start == 0)
 	{
 		liste->next = liste;
@@ -32,7 +32,7 @@ t_list	*ft_lstnew(void *content, t_pos *pos, t_pos *garbage)
 	{
 		liste->back = pos->start->back;
 		liste->next = pos->start;
-		if (*pos->size == 1)
+		if (pos->size == 1)
 			pos->start->next = liste;
 		else
 			pos->start->back->next = liste;

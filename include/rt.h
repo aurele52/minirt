@@ -16,26 +16,27 @@
 # include <math.h>
 # include "../minilibx-linux/mlx.h"
 # include "../minilibx-linux/mlx_int.h"
-# define ZLIMITE 0.1
-# define BUFFER_SIZE 2000
+// # define ZLIMITE 0.1
+# define BUFFER_SIZE 20000
+# define TEST 2
 # include <stdlib.h>
 # include <limits.h>
 # include <float.h>
 # include <unistd.h>
 # include <stdio.h>
-# include <stdarg.h>
-# include <fcntl.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <stdbool.h>
+// # include <stdarg.h>
+// # include <fcntl.h>
+// # include <sys/types.h>
+// # include <sys/wait.h>
+// # include <stdbool.h>
 
-typedef float t_coord __attribute__((ext_vector_type(3)));
+typedef double t_coord __attribute__((ext_vector_type(2)));
 
 typedef struct s_pos
 {
 	struct s_list	*start;
 	struct s_list	*end;
-	int				*size;
+	int				size;
 }	t_pos;
 
 typedef struct s_color
@@ -53,46 +54,20 @@ typedef struct s_list
 	struct s_pos	*pos;
 }	t_list;
 
-typedef struct	s_cam
-{
-	bool	yes;
-	t_coord	coord;
-	t_coord	ori;
-	t_coord	bottom_left;
-	t_coord	right;
-	t_coord	up;
-	t_color	color;
-	int		fov;
-}				t_cam;
-
-typedef struct	s_rotation
-{
-	float	yaw;
-	float	pitch;
-	float	roll;
-}				t_rotation;
-
-typedef struct s_sp
+typedef struct s_lycee
 {
 	t_color	color;
 	t_coord	coord;
-	float	rayon;
-}	t_sp;
+	double	rayon;
+	char *name;
+}	t_lycee;
 
-typedef struct s_pl
+typedef struct s_line
 {
 	t_color	color;
 	t_coord	coord;
 	t_coord	ori;
-}	t_pl;
-
-typedef struct s_ray
-{
-	t_color	color;
-	t_coord	coord;
-	t_coord	ori;
-	t_coord	through;
-}	t_ray;
+}	t_line;
 
 typedef struct s_seg
 {
@@ -101,49 +76,48 @@ typedef struct s_seg
 	t_coord	second;
 }	t_seg;
 
-typedef struct s_voxel
+typedef struct s_square
 {
 	t_color	color;
 	t_coord	first;
 	t_coord	second;
-}	t_voxel;
+}	t_square;
 
-typedef struct s_light
-{
-	t_color	color;
-	t_coord	coord;
-	float	intensiter;
-	bool	yes;
-}	t_light;
 
 enum e_objtype
 {
-	VOXEL,
-	SP,
-	PL,
-	C,
-	L,
+	SQUARE,
+	LYCEE,
 	SEG
+	// L,
 };
 
-typedef struct s_bt
+typedef struct s_tt
 {
 	t_pos	*obj;
-	struct s_bt *racine;
-	struct s_bt *left;
-	struct s_bt *right;
-}	t_bt;
+	struct s_tt *racine;
+	struct s_tt *left;
+	struct s_tt *center;
+	struct s_tt *right;
+	struct s_line *split;
+}	t_tt;
+
+// typedef struct s_bt
+// {
+// 	t_pos	*obj;
+// 	struct s_bt *racine;
+// 	struct s_bt *left;
+// 	struct s_bt *right;
+// }	t_bt;
 
 typedef struct s_obj
 {
 	int		type;
 	void	*obj;
-	float		xmin;
-	float		ymin;
-	float		xmax;
-	float		ymax;
-	float		zmin;
-	float		zmax;
+	double		xmin;
+	double		ymin;
+	double		xmax;
+	double		ymax;
 }	t_obj;
 
 typedef struct s_imginfo
@@ -158,23 +132,18 @@ typedef struct s_imginfo
 typedef struct s_rt
 {
 	t_imginfo	image;
-	t_pos		*garbage;
+	t_pos		garbage;
 	void		*win_ptr;
 	void		*mlx_ptr;
 	int			xsize;
 	int			ysize;
-	float		objxmin;
-	float		objymin;
-	float		objzmin;
-	float		objzmax;
-	float		objxmax;
-	float		objymax;
-	float		fov;
+	double		objxmin;
+	double		objymin;
+	double		objxmax;
+	double		objymax;
 	t_color		color;
 	t_coord		origin;
-	t_cam		cam;
-	t_light		light;
-	t_pos		*obj;
+	t_pos		obj;
 }	t_rt;
 
 /*liste*/
@@ -187,11 +156,9 @@ void		ft_posprint(t_rt *rt, t_pos *pos, void (*fct)(t_rt *, void *, int), int fd
 
 /*cast*/
 
-t_cam	*ft_C(t_list *liste);
-t_pl	*ft_pl(t_list *liste);
-t_seg	*ft_seg(t_list *liste);
-t_voxel	*ft_voxel(t_list *liste);
-t_sp	*ft_sp(t_list *liste);
+t_lycee	*listToLycee(t_list *liste);
+// t_seg	*ft_seg(t_list *liste);
+// t_voxel	*ft_voxel(t_list *liste);
 int		ft_type(t_list *liste);
 
 /*droite*/
@@ -207,13 +174,13 @@ void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two, t_color color);
 /*utils*/
 
 void	ft_swapcoord(t_coord *a, t_coord *b);
-void	ft_swap(float *a, float *b);
+void	ft_swap(double *a, double *b);
 void	ft_printpixelimg(t_rt *rt, t_coord print, t_color color);
-t_coord	ft_makecoord(t_rt *rt, float x, float y, float z);
+t_coord	ft_makecoord(t_rt *rt, double x, double y);
 
 /*Sphere*/
 
-void	ft_printsp(t_rt *rt, t_sp *sp);
+void	ft_printLycee(t_rt *rt, t_lycee *sp);
 
 /*libft*/
 
@@ -234,5 +201,5 @@ int			ft_atoi(char *str);
 int			ft_doublstrlen(char **str);
 int			ft_max(int nb1, int nb2);
 int			ft_min(int nb1, int nb2);
-
+//
 #endif

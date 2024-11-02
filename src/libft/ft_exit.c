@@ -10,13 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "../../include/rt.h"
 
 void	ft_exit(t_rt *rt, char *str)
 {
 	if (str)
 		write(2, str, ft_strlen(str));
-	if (rt->garbage != 0)
-		ft_posclear(rt->garbage, 2);
+	ft_posclear(&rt->garbage, 0);
 	exit(0);
 }
