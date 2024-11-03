@@ -18,7 +18,7 @@
 # include "../minilibx-linux/mlx_int.h"
 // # define ZLIMITE 0.1
 # define BUFFER_SIZE 20000
-# define TEST 2
+# define TEST 3
 # include <stdlib.h>
 # include <limits.h>
 # include <float.h>
@@ -59,6 +59,7 @@ typedef struct s_lycee
 	t_color	color;
 	t_coord	coord;
 	double	rayon;
+	double value;
 	char *name;
 }	t_lycee;
 
@@ -92,15 +93,14 @@ enum e_objtype
 	// L,
 };
 
-typedef struct s_tt
+typedef struct s_bt
 {
 	t_pos	*obj;
-	struct s_tt *racine;
-	struct s_tt *left;
-	struct s_tt *center;
-	struct s_tt *right;
+	struct s_bt *racine;
+	struct s_bt *left;
+	struct s_bt *right;
 	struct s_line *split;
-}	t_tt;
+}	t_bt;
 
 // typedef struct s_bt
 // {

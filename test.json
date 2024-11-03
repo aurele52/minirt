@@ -87,5 +87,14 @@
 	{"Nom_etablissement":"86","Latitude":900.0,"Longitude":600.0},
 	{"Nom_etablissement":"87","Latitude":900.0,"Longitude":700.0},
 	{"Nom_etablissement":"88","Latitude":900.0,"Longitude":800.0},
-	{"Nom_etablissement":"89","Latitude":900.0,"Longitude":900.0}
+	{"Nom_etablissement":"89","Latitude":900.0,"Longitude":900.0},
+
+	{"Nom_etablissement":"3","Latitude":180.0,"Longitude":180.0},
+	{"Nom_etablissement":"4","Latitude":220.0,"Longitude":220.0},
+	{"Nom_etablissement":"5","Latitude":200.0,"Longitude":180.0},
+	{"Nom_etablissement":"6","Latitude":200.0,"Longitude":220.0},
+	{"Nom_etablissement":"7","Latitude":200.0,"Longitude":200.0},
+	{"Nom_etablissement":"8","Latitude":180.0,"Longitude":200.0},
+	{"Nom_etablissement":"9","Latitude":220.0,"Longitude":200.0}
+
 ]

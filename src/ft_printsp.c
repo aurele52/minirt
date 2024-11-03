@@ -12,10 +12,16 @@
 
 #include "../include/rt.h"
 
-void drawCircle(t_rt *rt, double x0, double y0, int radius, t_color color) {
+void drawCircle(t_rt *rt, double x0, double y0, double radius, t_color color) {
 	if (TEST == 1) {
 		x0 = (((x0 + 5.14) / (9.56 + 5.14)) * 800) + 100;
 		y0 = ((1 - ((y0 - 41.32) / (51.09 - 41.32))) * 800) + 100;
+	}
+	if (TEST == 3) {
+		x0 = (((x0 - 1.3) / (3.7 - 1.3)) * 800) + 100;
+		// printf("%f\n", radius);
+		radius = radius * 400;
+		y0 = ((1 - ((y0 - 47.9) / (49.3 - 47.9))) * 800) + 100;
 	}
 	int x = radius;
     int y = 0;
@@ -43,6 +49,7 @@ void drawCircle(t_rt *rt, double x0, double y0, int radius, t_color color) {
 
 void	ft_printLycee(t_rt *rt, t_lycee *sp)
 {
+	printf("asd\n");
 	if (sp->coord.x != 0 && sp->coord.y != 0)
 	drawCircle(rt, sp->coord.x, sp->coord.y, sp->rayon, sp->color);
 }
