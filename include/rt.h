@@ -24,11 +24,11 @@
 # include <float.h>
 # include <unistd.h>
 # include <stdio.h>
-// # include <stdarg.h>
-// # include <fcntl.h>
-// # include <sys/types.h>
-// # include <sys/wait.h>
-// # include <stdbool.h>
+# include <stdarg.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <stdbool.h>
 
 typedef double t_coord __attribute__((ext_vector_type(2)));
 
@@ -129,78 +129,31 @@ typedef struct s_imginfo
 	int		endian;
 }	t_imginfo;
 
-typedef struct s_rt
+typedef struct s_scene
 {
-	t_imginfo	image;
 	t_pos		garbage;
-	void		*win_ptr;
-	void		*mlx_ptr;
-	int			xsize;
-	int			ysize;
 	double		objxmin;
 	double		objymin;
 	double		objxmax;
 	double		objymax;
-	t_color		color;
-	t_coord		origin;
 	t_pos		obj;
 	t_bt		*tree;
+}	t_scene;
+
+
+typedef struct s_rt
+{
+	t_pos		garbage;
+	t_imginfo	image;
+	void		*win_ptr;
+	void		*mlx_ptr;
+	int			xsize;
+	int			ysize;
+	t_coord		origin;
+	t_scene		scene;
 }	t_rt;
 
 /*liste*/
 
-t_pos		*ft_setpos(t_pos *garbage);
-void		ft_lstdelone(t_list *lst, int garbage);
-t_list		*ft_lstnew(void *content, t_pos *pos, t_pos *garbage);
-void		ft_posclear(t_pos *pos, int garbage);
-void		ft_posprint(t_rt *rt, t_pos *pos, void (*fct)(t_rt *, void *, int), int fd);
-
-/*cast*/
-
-t_lycee	*listToLycee(t_list *liste);
-// t_seg	*ft_seg(t_list *liste);
-// t_voxel	*ft_voxel(t_list *liste);
-int		ft_type(t_list *liste);
-
-/*droite*/
-
-void	ft_printsamey(t_rt *rt, t_coord one, t_coord two, t_color color);
-void	ft_printdiagonefour(t_rt *rt, t_coord one, t_coord two, t_color color);
-void	ft_printdiagtwothree(t_rt *rt, t_coord one, t_coord two, t_color color);
-void	ft_printdiag(t_rt *rt, t_coord one, t_coord two, t_color color);
-void	ft_printsamex(t_rt *rt, t_coord one, t_coord two, t_color color);
-void	ft_printdroite(t_rt *rt, t_coord one, t_coord two, t_color color);
-void	ft_bresenhamoneeight(t_rt *rt, t_coord one, t_coord two, t_color color);
-
-/*utils*/
-
-void	ft_swapcoord(t_coord *a, t_coord *b);
-void	ft_swap(double *a, double *b);
-void	ft_printpixelimg(t_rt *rt, t_coord print, t_color color);
-t_coord	ft_makecoord(t_rt *rt, double x, double y);
-
-/*Sphere*/
-
-void	ft_printLycee(t_rt *rt, t_lycee *sp);
-
-/*libft*/
-
-char		*get_next_line(int fd, t_pos *free);
-int			ft_abs(int nbr);
-void		ft_exit(t_rt *rt, char *str);
-int			ft_closevaria(int i, ...);
-char		*ft_strjoin(char *s1, char *s2, t_pos *garbage);
-void		ft_putnbrfd(int n, int fd);
-char		*ft_strdup(const char *s, t_pos *garbage);
-char		*ft_substr(char const *s, int start, int len, t_pos *garb);
-int			ft_strcmp(const char *str1, const char *str2);
-void		*ft_malloc(int size, t_pos *garbage);
-int			ft_strlen(const char *s);
-char		**ft_split(char const *s, char c, t_pos *garbage);
-char		*ft_itoa(int n, t_pos *garbage);
-int			ft_atoi(char *str);
-int			ft_doublstrlen(char **str);
-int			ft_max(int nb1, int nb2);
-int			ft_min(int nb1, int nb2);
 //
 #endif

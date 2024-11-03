@@ -10,32 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-FILE=	main.c	\
-		libft/ft_exit.c	\
-		libft/ft_malloc.c		\
-		libft/ft_strlen.c	\
-		libft/ft_posclear.c \
-		libft/ft_lstnew.c	\
-		libft/ft_lstdelone.c	\
-		libft/ft_strjoin.c	\
-		libft/ft_putnbrfd.c	\
-		libft/ft_substr.c \
-		libft/ft_strcmp.c	\
-		libft/ft_strdup.c	\
-		libft/ft_split.c \
-		libft/ft_itoa.c	\
-		libft/ft_max.c	\
-		libft/ft_min.c	\
-		libft/ft_atoi.c	\
-		libft/get_next_line.c	\
-		libft/get_next_line_utils.c	\
-		libft/ft_abs.c \
-		ft_printdroite2.c	\
-		ft_printdroite3.c	\
-		ft_printdroite.c	\
-		ft_cast.c	\
-		ft_printsp.c	\
-		libft/ft_setpos.c
+FILE=	all.c
 
 
 SRC_DIR = src/
