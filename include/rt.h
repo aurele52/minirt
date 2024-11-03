@@ -18,7 +18,7 @@
 # include "../minilibx-linux/mlx_int.h"
 // # define ZLIMITE 0.1
 # define BUFFER_SIZE 20000
-# define TEST 3
+# define TEST 2
 # include <stdlib.h>
 # include <limits.h>
 # include <float.h>
@@ -144,6 +144,7 @@ typedef struct s_rt
 	t_color		color;
 	t_coord		origin;
 	t_pos		obj;
+	t_bt		*tree;
 }	t_rt;
 
 /*liste*/

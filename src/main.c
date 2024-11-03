@@ -1,4 +1,5 @@
 #include "../include/rt.h"
+#include <bits/types/cookie_io_functions_t.h>
 #include <stdio.h>
 
 t_coord	ft_makecoord(t_rt *rt, double x, double y)
@@ -371,15 +372,6 @@ t_pos	*ft_lstdup(t_pos *pos, t_pos *garbage)
 	return (new);
 }
 
-int	ft_calcfin(t_pos *obj, t_square *square, int depth)
-{
-	if (depth >= 1)
-		return (1);
-	return (0);
-	(void)square;
-	(void)obj;
-	(void)depth;
-}
 
 t_bt	*ft_newleaf(t_rt *rt, t_pos *obj)
 {
@@ -444,7 +436,7 @@ t_bt	*treeConstruct(t_rt *rt, t_pos *obj, t_square *square, int depth, int histo
 
 	if (obj->size == 0)
 		return 0;
-	if (ft_calcfin(obj, square, depth) || (obj->size == history[0] && obj->size == history[1] && obj->size == history[2]))
+	if (depth >= 30 || (obj->size == history[0] && obj->size == history[1] && obj->size == history[2]))
 		return (ft_newleaf(rt, obj));
 	line = ft_findsplitsquare(rt, obj, square, depth % 2);
 	// printLineInSquare(rt, line, square);
@@ -480,28 +472,37 @@ void	printList(t_rt *rt, t_pos *pos) {
 		liste = liste->next;
 	}
 }
+double maxToParse = 0;
 
 void	addValueOne(t_rt *rt, t_pos *obj, t_lycee *add) {
-	t_list	*liste;
-	int		mem;
-	int	toAdd = 0;
-
+	// t_list	*liste;
+	// int		mem;
+	// int	toAdd = 0;
+	//
 	if (!obj || obj->size == 0) {
 		return;
 	}
-	mem = 0;
-	liste = obj->start;
-	while (liste != obj->start || mem++ == 0)
-	{
-		if (add->name != listToLycee(liste)->name) {
-			toAdd++;
-		// printf("yessssssss %s %f\n",add->name, add->value);
-		}
-		liste = liste->next;
+	static int lol = 0;
+	// mem = 0;
+	// liste = obj->start;
+	// while (liste != obj->start || mem++ == 0)
+	// {
+	// 	if (add->name != listToLycee(liste)->name) {
+	// 		toAdd++;
+	// 	// printf("yessssssss %s %f\n",add->name, add->value);
+	// 	}
+	// 	liste = liste->next;
+	// }
+	// if (toAdd != obj->size - 1)
+		// printf("%d %d\n", toAdd, obj->size - 1);
+	if (obj->size - 1 > add->value)
+		add->value = obj->size - 1;
+	if (add->value > maxToParse) {
+		maxToParse = add->value;
+		// printf("%f %s\n", add->value, add->name);
 	}
-	if (toAdd > add->value)
-		add->value = toAdd;
-	// if (toAdd == 75) {
+
+	// if (add->value == 41) {
 		// ft_printLycee(rt, add);
 	// }
 	// printList(rt, obj);
@@ -534,13 +535,12 @@ void	exploreTree(t_rt *rt, t_bt *tree) {
 		exploreTree(rt, tree->right);
 	// printObjListName(rt, tree->obj);
 	}
-	ft_printobjlist(rt, tree->obj);
-	// if (tree->obj && tree->obj->size != 0) {
-		// addValueAll(rt, tree->obj);
+	if (tree->obj && tree->obj->size != 0) {
+		addValueAll(rt, tree->obj);
 	// printf("node: %i\n", lol);
 	// lol++;
 	// printObjListName(rt, tree->obj);
-	// }
+	}
 
 
 }
@@ -563,25 +563,19 @@ t_bt *searchCoordInTree(t_rt *rt, t_bt *tree, t_coord coord) {
 	if (tree->obj && tree->obj->size != 0) {
 		return (tree);
 	}
-	printf("pointx: %f, pointy: %f\n", coord.x, coord.y);
-	printf("x: %f, y: %f, orix: %f\n", tree->split->coord.x, tree->split->coord.y, tree->split->ori.x);
 	if (tree->split->ori.x == 0) {
 		if (tree->split->coord.x <= coord.x) {
-			printf("1\n");
 			return (searchCoordInTree(rt, tree->left, coord));
 		}
 		else {
-			printf("2\n");
 			return (searchCoordInTree(rt, tree->right, coord));
 		}
 	}
 	else {
 		if (tree->split->coord.y <= coord.y) {
-			printf("3\n");
 			return (searchCoordInTree(rt, tree->left, coord));
 		}
 		else {
-			printf("4\n");
 			return (searchCoordInTree(rt, tree->right, coord));
 		}
 	}
@@ -602,11 +596,9 @@ void	ft_construcbtree(t_rt *rt)
 	history[0] = -1;
 	history[1] = -1;
 	history[2] = -1;
-	tree = treeConstruct(rt, &rt->obj, square, 0, history);
-	// printf("asdsa\n");
-	exploreTree(rt, tree);
-	exploreTree2(rt, tree);
-	// printf("asdsa2\n");
+	rt->tree = treeConstruct(rt, &rt->obj, square, 0, history);
+	exploreTree(rt, rt->tree);
+	// exploreTree2(rt, tree);
 	// printList(rt, &rt->obj);
 	// printf("%d\n", rt->obj.size);
 	// in = searchCoordInTree(rt, tree, ft_makecoord(rt, 200, 800));
@@ -989,72 +981,93 @@ t_color	ft_findcolor(t_rt *rt)
 {
 	t_color	color;
 
-//	intensity = ft_findintensity(rt, rayon, sol, obj->obj);
-//	color = *ft_coloralbedo(rt, intensity, obj->obj);
 	color.red = 0;
 	color.green = 0;
 	color.blue = 100;
 	return (color);
 }
-//
-// void	ft_lol(int lol)
-// {
-// 	(void)lol;
-// }
-//
-// /*
-// void	ft_firsbtracing(t_rt *rt)
-// {
-// 	int		i;
-// 	int		j;
-// 	t_ray	rayon;
-// 	t_color	color;
-//
-// 	i = 0;
-// 	j = 0;
-// 	while (j < rt->ysize - 1)
-// 	{
-// 		while (i < rt->xsize - 1)
-// 		{
-// 			if (i == 750 && j == 700)
-// 				ft_lol(0);
-// 			rayon.coord = rt->cam.coord;
-// 			rayon.ori = ft_makecoord(rt, i - rt->xsize / 2, j - rt->ysize / 2, -rt->xsize / (2 * tan(rt->fov / 2)));
-// 			ft_norm(&rayon.ori);
-// 			color = ft_findcolor(rt, &rayon);
-// 			ft_printpixelimg(rt, ft_makecoord(rt, i, rt->ysize - j, 0), color);
-// 			i++;
-// 		}
-// 		i = 0;
-// 		j++;
-// 	}
-// }
-// */
 
-//
-// void	ft_firsbtracing(t_rt *rt)
-// {
-// 	t_list	*objact;
-// 	t_list	*toprint;
-// 	float	mem;
-// 	
-// 	toprint = 0;
-// 	objact = rt->obj->start;
-// 	ft)printob
-// 	objact = objact->next;
-// 	while (objact != rt->obj->start)
-// 	{
-// 		objact = objact->next;
-// 	}
-//
-// }
+int	coordInCircle(t_coord coord, t_lycee *lycee) {
+	double distance = sqrt(pow(coord.x - lycee->coord.x, 2) + pow(coord.y - lycee->coord.y, 2));
+	if (distance <= lycee->rayon) {
+		return 1;
+	}
+	return 0;
+}
+
+void	calcInside(t_rt *rt, t_lycee *lyc, t_pos *obj) {
+	t_list	*liste;
+	t_bt	*find;
+	int		mem;
+	int add =0;
+	static int lol = 0;
+
+	if (!obj || obj->size == 0) {
+		return;
+	}
+	mem = 0;
+	liste = obj->start;
+	while (liste != obj->start || mem++ == 0)
+	{
+		if (listToLycee(liste)->name != lyc->name) {
+			if (coordInCircle(lyc->coord, listToLycee(liste)))
+				add++;
+
+		}
+		liste = liste->next;
+	}
+	if (add >= lol) {
+		lol = add;
+		printf("lol%d\n", add);
+		printf("name: %s\n", lyc->name);
+
+	}
+
+}
+
+void	printListMax(t_rt *rt, t_pos *pos) {
+	t_list	*liste;
+	t_bt	*find;
+	int		mem;
+
+	if (!pos || pos->size == 0) {
+		return;
+	}
+	mem = 0;
+	liste = pos->start;
+	printf("66666666666666666qqqqqqqqqqq\n");
+	while (liste != pos->start || mem++ == 0)
+	{
+			// printf("%s\n", listToLycee(liste)->name);
+		if (listToLycee(liste)->value >= maxToParse) {
+			find = searchCoordInTree(rt, rt->tree, listToLycee(liste)->coord);
+			if (find) {
+				calcInside(rt, listToLycee(liste), find->obj);
+			}
+		}
+		liste = liste->next;
+	}
+	printf("555555555555555555555qqqqqqqqq\n");
+}
+
+void	findCoordMax(t_rt *rt) {
+	printf("7777777qqqqqqqqqqq\n");
+	printListMax(rt, &rt->obj);
+	printf("88888888qqqqqqqqqq\n");
+}
 
 void	ft_printfirst(t_rt *rt)
 {
+	printf("qqqqqqqqqqqqqqqqqq\n");
 	ft_clearimg(rt);
 	ft_construcbtree(rt);
-	// ft_printobjlist(rt, &rt->obj);
+	printf("qqqqqqqqqqqqqqqqqq\n");
+	findCoordMax(rt);
+	printf("qqqqqqqqqqqqqqqqqq\n");
+	ft_printobjlist(rt, &rt->obj);
+	printf("qqqqqqqqqqqqqqqqqq\n");
 	// ft_firsbtracing(rt);
+	
 	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr, rt->image.origin, 0, 0);
 }
 
@@ -1227,9 +1240,9 @@ void	*ft_makeLycee(t_rt *rt, char *str)
 	if (TEST == 1)
 		new->rayon = 0.01;
 	if (TEST == 2)
-		new->rayon = 0.1;
+		new->rayon = 20;
 	if (TEST == 3)
-		new->rayon = 0.1;
+		new->rayon = 0.01;
 	new->color = ft_getfromint(rt, 900);
 	new->value = 0;
 	// printf("%s\n", str);
