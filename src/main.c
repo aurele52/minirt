@@ -1338,6 +1338,73 @@ void	ft_initrt(t_rt *rt)
 	ft_open(rt);
 }
 
+void *ft_makeTout(t_rt *rt, char *str) {
+    t_lycee *new;
+    char *end;
+
+    new = ft_malloc(sizeof(t_lycee), &rt->garbage);
+    if (!new)
+        ft_exit(rt, "malloc error\n");
+
+    new->coord.x = strtod(searchJsonValue(rt, str, "longitude"), &end);
+    new->coord.y = strtod(searchJsonValue(rt, str, "latitude"), &end);
+
+    if (TEST == 3) {
+        if (new->coord.x < 1.3 || new->coord.x > 3.7 || new->coord.y < 47.9 || new->coord.y > 49.3)
+            return 0;
+    } else if (TEST != 2) {
+        if (new->coord.x < -5.15 || new->coord.x > 9.56 || new->coord.y < 41.31 || new->coord.y > 51.1)
+            return 0;
+    }
+   new->type = searchJsonValue(rt, str, "type");
+
+    if (TEST == 0)
+        new->rayon = 0.1;
+    else if (TEST == 1)
+        new->rayon = 0.01;
+    else if (TEST == 2)
+        new->rayon = 20;
+    else if (TEST == 3)
+        new->rayon = 0.01;
+
+    new->color = ft_getfromint(rt, 900);
+    new->value = 0;
+    t_obj *ret = ft_makeobj(rt, new, LYCEE);
+    return (ret);
+}
+
+void	ft_openall(t_rt *rt)
+{
+	char	*temp;
+	char	*ret;
+	int		fd;
+
+	ret = ft_strdup("", &rt->garbage);
+	if (ret == 0)
+		ft_exit(rt, "ERROR");
+	if (TEST == 0)
+		fd = open("data.json", O_RDONLY);
+	if (TEST == 1)
+		fd = open("data.json", O_RDONLY);
+	if (TEST == 2)
+		fd = open("test2.json", O_RDONLY);
+	if (TEST == 3)
+		fd = open("data.json", O_RDONLY);
+	if (fd == -1)
+		ft_exit(rt, "Error");
+	int i = 0;
+	while (1)
+	{
+		temp = get_next_line(fd, &rt->garbage);
+		if (temp == 0)
+		{
+			close(fd);
+			return ;
+		}
+		ft_parse(rt, temp);
+	}
+}
+
 int	main()
 {
 	t_rt	rt;
