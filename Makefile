@@ -10,7 +10,12 @@
 #                                                                              #
 # **************************************************************************** #
 
-FILE=	all.c
+FILE=	all.c \
+		cast.c	\
+		print.c	\
+		tree.c	\
+		utils.c	\
+		parse.c
 
 
 SRC_DIR = src/

@@ -18,7 +18,8 @@
 # include "../minilibx-linux/mlx_int.h"
 // # define ZLIMITE 0.1
 # define BUFFER_SIZE 20000
-# define TEST 2
+# define TEST 1
+#define STEP 1
 # include <stdlib.h>
 # include <limits.h>
 # include <float.h>
@@ -153,7 +154,53 @@ typedef struct s_rt
 	t_scene		scene;
 }	t_rt;
 
-/*liste*/
 
-//
+/*Tree*/
+void makeTree(t_rt *rt);
+
+/*Parse*/
+void	ft_open(t_rt *rt, t_coord coord);
+
+/*Cast*/
+t_lycee	*listToLycee(t_list *liste);
+int	colorToInt(t_color *color);
+t_color	intToColor(int color);
+int		listeToType(t_list *liste);
+
+
+/*Print*/
+void	printdroite(t_rt *rt, t_coord one, t_coord two, t_color color);
+void	printLycee(t_rt *rt, t_lycee *sp);
+void	printseg(t_rt *rt, t_seg *seg);
+void	printdroite(t_rt *rt, t_coord one, t_coord two, t_color color);
+void	printSquare(t_rt *rt, t_square *square);
+void	printobj(t_rt *rt, t_obj *obj);
+
+
+
+
+
+
+/*utils*/
+t_coord	makecoord(t_rt *rt, double x, double y);
+char		*get_next_line(int fd, t_pos *free);
+int			ft_abs(int nbr);
+void		ft_exit(t_rt *rt, char *str);
+char		*strjoin(char *s1, char *s2, t_pos *garbage);
+void		putnbrfd(int n, int fd);
+char		*ft_strdup(const char *s, t_pos *garbage);
+char		*substr(char const *s, int start, int len, t_pos *garb);
+void		*ft_malloc(int size, t_pos *garbage);
+char		**split(char const *s, char c, t_pos *garbage);
+char		*itoa(int n, t_pos *garbage);
+int			atoi(const char *str);
+int			max(int nb1, int nb2);
+int			min(int nb1, int nb2);
+int	ft_strstr(const char *big, const char *libtle);
+t_pos		*setpos(t_pos *garbage);
+void		lstdelone(t_list *lst, int garbage);
+t_list		*lstnew(void *content, t_pos *pos, t_pos *garbage);
+void		posclear(t_pos *pos, int garbage);
+void		posprint(t_rt *rt, t_pos *pos, void (*fct)(t_rt *, void *, int), int fd);
+
 #endif
